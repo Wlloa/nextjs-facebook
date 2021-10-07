@@ -14,6 +14,10 @@ const Nav = styled.nav`
   box-shadow: 0 2px 6px 0 rgb(79 79 79 / 16%);
   z-index: 10;
   padding: 8px 16px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
 `;
 
 const SearchContainer = styled.div`
