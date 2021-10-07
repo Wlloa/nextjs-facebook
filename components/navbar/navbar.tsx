@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import Logo from "../../public/static/miscellanea/icon.svg";
+import { Menu } from "./menu";
+import { Navigation } from "./navigation";
 import { Search } from "./search";
 
 const Nav = styled.nav`
@@ -10,6 +12,7 @@ const Nav = styled.nav`
   height: 56px;
   background-color: #ffffff;
   box-shadow: 0 2px 6px 0 rgb(79 79 79 / 16%);
+  z-index: 10;
   padding: 8px 16px;
 `;
 
@@ -18,7 +21,17 @@ const SearchContainer = styled.div`
   height: 40px;
 `;
 
-function Navbar() {
+const NavigationContainer = styled.div`
+  display: flex;
+  flex-grow: 1;
+`;
+
+const ReservedSpace = styled.div`
+  width: 300px;
+  height: 56px;
+`;
+
+function Navbar():JSX.Element {
   return (
     <Nav>
       {/* logo and search bar */}
@@ -27,9 +40,11 @@ function Navbar() {
         <Search />
       </SearchContainer>
       {/* central nav */}
-      <div></div>
+      <NavigationContainer>
+        <Navigation />
+      </NavigationContainer>
       {/* account and settings options*/}
-      <div></div>
+      <Menu></Menu>
     </Nav>
   );
 }

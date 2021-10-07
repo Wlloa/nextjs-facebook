@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { Fragment, ReactNode } from "react";
 import styled from "styled-components";
 import Navbar from "../navbar/navbar";
 
@@ -6,17 +6,17 @@ interface Props {
   children: ReactNode;
 }
 
-const Container = styled.div`
+const Container = styled.main`
   background-color: #f0f2f5;
-  min-height: 100vh;
+  min-height: calc(100vh - 56px);
 `;
 
 const Layout = ({ children }: Props): JSX.Element => {
   return (
-    <Container>
+    <div>
       <Navbar />
-      <main>{children}</main>
-    </Container>
+      <Container>{children}</Container>
+    </div>
   );
 };
 

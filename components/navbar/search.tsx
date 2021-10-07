@@ -20,7 +20,7 @@ const Icon = styled.i`
     opacity: 0.6;
 `;
 
-const _Search = ({ className }: StyledProps) => {
+const _Search = ({ className }: StyledProps): JSX.Element => {
   return (
     <div className={className}>
       <IconContainer>
