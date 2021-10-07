@@ -62,7 +62,7 @@ export const AccountWidget = (): JSX.Element => {
       <a href="">
         <div>
           <Image
-            src="/../public/static/miscellanea/me.jpg"
+            src="/static/miscellanea/me.jpg"
             alt="Wilber"
             width="28"
             height="28"

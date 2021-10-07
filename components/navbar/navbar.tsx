@@ -26,11 +26,6 @@ const NavigationContainer = styled.div`
   flex-grow: 1;
 `;
 
-const ReservedSpace = styled.div`
-  width: 300px;
-  height: 56px;
-`;
-
 function Navbar():JSX.Element {
   return (
     <Nav>
