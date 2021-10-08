@@ -6,6 +6,7 @@ import Notification from "../../public/static/miscellanea/notification.svg";
 import Image from "next/image";
 
 interface ItemProps extends StyledProps {
+  url: string;
   posX: number;
   posY: number;
 }
@@ -21,8 +22,8 @@ const IconContainer = styled.div`
   justify-content: center;
 `;
 
-const Icon = styled.i`
-  background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/yE/r/R3l5SniutOc.png);
+export const Icon = styled.i`
+  background-image: url(${({url}:ItemProps):string => url});
   background-position: ${({ posX, posY }: ItemProps): string =>
     `${posX}px ${posY}px`};
   background-size: auto;
@@ -78,7 +79,7 @@ export const MenuItem = (props: ItemProps): JSX.Element => {
   const { posX, posY } = props;
   return (
     <IconContainer>
-      <Icon posX={posX} posY={posY}></Icon>
+      <Icon url="https://static.xx.fbcdn.net/rsrc.php/v3/yE/r/R3l5SniutOc.png" posX={posX} posY={posY}></Icon>
     </IconContainer>
   );
 };
@@ -103,7 +104,7 @@ export const Menu = (): JSX.Element => {
           <AccountWidget />
         </li>
         <li>
-          <MenuItem posX={-126} posY={-107} />
+          <MenuItem url="https://static.xx.fbcdn.net/rsrc.php/v3/yE/r/R3l5SniutOc.png" posX={-126} posY={-107} />
         </li>
         <li>
           <IconContainer>
@@ -116,7 +117,7 @@ export const Menu = (): JSX.Element => {
           </IconContainer>
         </li>
         <li>
-          <MenuItem posX={-126} posY={-128} />
+          <MenuItem url="https://static.xx.fbcdn.net/rsrc.php/v3/yE/r/R3l5SniutOc.png" posX={-126} posY={-128} />
         </li>
       </UList>
     </div>

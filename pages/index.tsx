@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import styled from "styled-components";
 import { MainFeed } from "../components/home/feed";
+import { POSTS } from "../models/post";
 
 const MainLayout = styled.div`
   display: flex;
@@ -15,7 +16,7 @@ const Home: NextPage = (): JSX.Element => {
   return (
     <MainLayout>
       <LeftContainer />
-      <MainFeed />
+      <MainFeed posts={POSTS} />
       <LeftContainer />
     </MainLayout>
   );
