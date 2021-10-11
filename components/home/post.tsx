@@ -56,6 +56,12 @@ const Footer = styled.div`
     margin-right: auto;
   }
   li {
+    display: flex;
+    width: 100%;
+    padding: 6px 2px;
+    align-items: center;
+    justify-content: center;
+
     a {
       display: flex;
       align-items: center;
@@ -69,6 +75,11 @@ const Footer = styled.div`
       color: #65676b;
       font-size: 15px;
     }
+  }
+
+  li:hover{
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
   }
 `;
 
@@ -150,5 +161,4 @@ export const Post = styled(_Post)`
   min-height: 100px;
   margin: 16px 0;
   background-color: #ffffff;
-  padding-bottom: 12px;
 `;
