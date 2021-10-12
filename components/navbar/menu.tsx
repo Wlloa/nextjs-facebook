@@ -9,6 +9,8 @@ interface ItemProps extends StyledProps {
   url: string;
   posX: number;
   posY: number;
+  height: number;
+  width: number;
 }
 
 const IconContainer = styled.div`
@@ -23,18 +25,18 @@ const IconContainer = styled.div`
 `;
 
 export const Icon = styled.i`
-  background-image: url(${({url}:ItemProps):string => url});
+  background-image: url(${({ url }: ItemProps): string => url});
   background-position: ${({ posX, posY }: ItemProps): string =>
     `${posX}px ${posY}px`};
   background-size: auto;
-  width: 20px;
-  height: 20px;
+  width: ${({ width }: ItemProps): string => `${width}px`};
+  height: ${({ height }: ItemProps): string => `${height}px`};
   background-repeat: no-repeat;
   display: inline-block;
 `;
 
 const AccountContainer = styled.div`
-    margin-right: 20px;
+  margin-right: 20px;
   a {
     display: flex;
     align-items: center;
@@ -45,14 +47,14 @@ const AccountContainer = styled.div`
       margin-right: 6px;
     }
     span {
-        font-size: 15px;
-        font-weight: 600;
-        word-break: break-word;
-        word-wrap: break-word;
-        white-space: nowrap;
-        line-height: 1.33;
-        overflow: hidden;
-        text-overflow: ellipsis;
+      font-size: 15px;
+      font-weight: 600;
+      word-break: break-word;
+      word-wrap: break-word;
+      white-space: nowrap;
+      line-height: 1.33;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 `;
@@ -79,7 +81,13 @@ export const MenuItem = (props: ItemProps): JSX.Element => {
   const { posX, posY } = props;
   return (
     <IconContainer>
-      <Icon url="https://static.xx.fbcdn.net/rsrc.php/v3/yE/r/R3l5SniutOc.png" posX={posX} posY={posY}></Icon>
+      <Icon
+        url="https://static.xx.fbcdn.net/rsrc.php/v3/yE/r/R3l5SniutOc.png"
+        posX={posX}
+        posY={posY}
+        height={20}
+        width={20}
+      ></Icon>
     </IconContainer>
   );
 };
@@ -104,7 +112,13 @@ export const Menu = (): JSX.Element => {
           <AccountWidget />
         </li>
         <li>
-          <MenuItem url="https://static.xx.fbcdn.net/rsrc.php/v3/yE/r/R3l5SniutOc.png" posX={-126} posY={-107} />
+          <MenuItem
+            url="https://static.xx.fbcdn.net/rsrc.php/v3/yE/r/R3l5SniutOc.png"
+            posX={-126}
+            posY={-107}
+            height={20}
+            width={20}
+          />
         </li>
         <li>
           <IconContainer>
@@ -117,7 +131,13 @@ export const Menu = (): JSX.Element => {
           </IconContainer>
         </li>
         <li>
-          <MenuItem url="https://static.xx.fbcdn.net/rsrc.php/v3/yE/r/R3l5SniutOc.png" posX={-126} posY={-128} />
+          <MenuItem
+            url="https://static.xx.fbcdn.net/rsrc.php/v3/yE/r/R3l5SniutOc.png"
+            posX={-126}
+            posY={-128}
+            height={20}
+            width={20}
+          />
         </li>
       </UList>
     </div>

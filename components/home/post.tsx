@@ -42,7 +42,7 @@ const Description = styled.div`
   padding: 4px 16px 16px;
 `;
 
-const Footer = styled.div`
+export const Footer = styled.div`
   width: 100%;
   ul {
     width: 90%;
@@ -50,7 +50,7 @@ const Footer = styled.div`
     justify-content: space-between;
     align-items: center;
     height: 44px;
-    border-top: 1px solid #b1b1b1;
+    border-top: 1px solid #E4E6EB;
     margin-top: 48px;
     margin-left: auto;
     margin-right: auto;
@@ -123,6 +123,8 @@ const _Post = (props: Prop): JSX.Element => {
                 url="https://static.xx.fbcdn.net/rsrc.php/v3/yn/r/AxgTurULzhJ.png"
                 posX={0}
                 posY={-306}
+                height={20}
+                width={20}
               />
               <span>Like</span>
             </a>
@@ -133,6 +135,8 @@ const _Post = (props: Prop): JSX.Element => {
                 url="https://static.xx.fbcdn.net/rsrc.php/v3/yn/r/AxgTurULzhJ.png"
                 posX={0}
                 posY={-268}
+                height={20}
+                width={20}
               />
               <span>Comment</span>
             </a>
@@ -143,6 +147,8 @@ const _Post = (props: Prop): JSX.Element => {
                 url="https://static.xx.fbcdn.net/rsrc.php/v3/yn/r/AxgTurULzhJ.png"
                 posX={0}
                 posY={-325}
+                height={20}
+                width={20}
               />
               <span>Share</span>
             </a>
