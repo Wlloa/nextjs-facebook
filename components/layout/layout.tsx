@@ -1,6 +1,7 @@
-import React, { Fragment, ReactNode } from "react";
+import React, { ReactNode } from "react";
 import styled from "styled-components";
 import Navbar from "../navbar/navbar";
+import { useRouter } from "next/router";
 
 interface Props {
   children: ReactNode;
@@ -12,9 +13,11 @@ const Container = styled.main`
 `;
 
 const Layout = ({ children }: Props): JSX.Element => {
+  const router = useRouter();
+  const showNavbar = router.pathname !== "/auth";
   return (
     <div>
-      <Navbar />
+      {showNavbar && <Navbar />}
       <Container>{children}</Container>
     </div>
   );
