@@ -12,6 +12,10 @@ export const GlobalStyle = createGlobalStyle`
       margin: 0;
       font-family: 'Roboto', sans-serif;
       color: #505050;
+      display: inline-block;
+      @media(min-width: 768px){
+        width: 100%;
+      }
     } 
 
     h1,

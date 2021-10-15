@@ -43,6 +43,9 @@ const Footer = styled.footer`
   background-color: var(--color-white);
   height: 200px;
   width: 100%;
+  @media (max-width: 767px) {
+    display: none;
+  }
 `;
 
 const Body = styled.div`
@@ -54,6 +57,14 @@ const Body = styled.div`
   padding-bottom: 112px;
   padding-top: 72px;
   width: 100%;
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+    padding-top: 8px;
+    padding-bottom: 0;
+    background-color: var(--color-white);
+    justify-content: flex-start;
+  }
 `;
 
 const LogoSection = styled.section`
@@ -62,6 +73,9 @@ const LogoSection = styled.section`
   max-width: 500px;
   align-items: flex-start;
   h2 {
+    @media (max-width: 767px) {
+      display: none;
+    }
     font-size: 28px;
     font-weight: normal;
     line-height: 32px;
@@ -73,6 +87,11 @@ const FbkLogo = styled(Facebook)`
   height: 106px;
   width: 100%;
   margin-left: -28px;
+  @media (max-width: 767px) {
+    margin: 0;
+    width: 112px;
+    height: 40px;
+  }
 `;
 
 const CardForm = styled.div`
@@ -118,6 +137,24 @@ const CardForm = styled.div`
       text-decoration: none;
     }
   }
+
+  @media (max-width: 767px) {
+    box-shadow: none;
+    margin: 0;
+    padding-top: 8px;
+
+    form {
+      input {
+        margin-top: 0;
+      }
+      a {
+        color: #216fdb;
+        font-family: "Roboto-Regular", "Helvetica", "sans-serif";
+        font-size: 14px;
+        line-height: 16px;
+      }
+    }
+  }
 `;
 
 const SubmitBtn = styled.button`
@@ -145,6 +182,11 @@ const SubmitBtn = styled.button`
     background-color: #29487d;
     border-color: #29487d;
   }
+
+  @media (max-width: 767px) {
+    margin-top: 4px;
+    text-shadow: 0 -1px rgb(0 0 0 / 25%);
+  }
 `;
 
 const CreateAccountBtn = styled.button`
@@ -170,6 +212,20 @@ const CreateAccountBtn = styled.button`
   transition: 200ms cubic-bezier(0.08, 0.52, 0.52, 1) background-color,
     200ms cubic-bezier(0.08, 0.52, 0.52, 1) box-shadow,
     200ms cubic-bezier(0.08, 0.52, 0.52, 1) transform;
+
+  @media (max-width: 767px) {
+    height: 36px;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background: #00a400;
+    border: none;
+    box-shadow: none;
+    line-height: 27px;
+    font-size: 14px;
+    text-shadow: 0 -1px 0 rgb(0 0 0 / 35%);
+  }
 `;
 
 const Separator = styled.div`
@@ -192,6 +248,11 @@ const Celebrity = styled.div`
     font-weight: 600;
     text-decoration: none;
   }
+
+  @media (max-width: 767px) {
+    display: none;
+  }
+
 `;
 
 const Auth = styled(_Auth)`
@@ -199,6 +260,9 @@ const Auth = styled(_Auth)`
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
+  @media (max-width: 767px) {
+    min-width: 100vw;
+  }
 `;
 
 export default Auth;
