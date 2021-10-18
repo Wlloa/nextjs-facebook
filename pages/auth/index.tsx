@@ -1,15 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { StyledProps } from "../../common/props-interface";
 import Image from "next/image";
 import Facebook from "../../public/static/miscellanea/facebook.svg";
+import Modal from "../../components/modal";
 
 export interface AuthProps extends StyledProps {}
 
 function _Auth(props: AuthProps): JSX.Element {
   const { className } = props;
+  const [showModal, setShowModal] = useState(false);
+
+  const createAccount = (event: any):void => {
+    event.preventDefault();
+    setShowModal(current => !current);
+  };
+
+  const onClose = () => {
+    setShowModal(false);
+  };
+
   return (
     <div className={className}>
+      <Modal show={showModal} onClose={onClose} title="Sign Up" subtitle="It’s quick and easy.">
+      </Modal>
       <Body>
         <LogoSection>
           <div>
@@ -26,7 +40,9 @@ function _Auth(props: AuthProps): JSX.Element {
               <SubmitBtn type="submit">Log In</SubmitBtn>
               <a href="">Forgot Password?</a>
               <Separator></Separator>
-              <CreateAccountBtn>Create New Account</CreateAccountBtn>
+              <CreateAccountBtn onClick={(event)=> createAccount(event)}>
+                Create New Account
+              </CreateAccountBtn>
             </form>
           </CardForm>
           <Celebrity>
@@ -252,7 +268,6 @@ const Celebrity = styled.div`
   @media (max-width: 767px) {
     display: none;
   }
-
 `;
 
 const Auth = styled(_Auth)`
