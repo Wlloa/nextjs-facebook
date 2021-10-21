@@ -27,11 +27,18 @@ const StyledModalOverlay = styled.div`
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
+  @media(max-width: 768px) {
+    width: unset;
+  }
 `;
 
 const StyledModalWrapper = styled.div`
-  width: 500px;
-  height: 600px;
+  width: 432px;
+  height: 500px;
+  @media(max-width: 768px) {
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 const StyledModal = styled.div`
@@ -39,7 +46,10 @@ const StyledModal = styled.div`
   width: 100%;
   height: 100%;
   border-radius: 15px;
-  padding: 15px;
+  padding: 16px;
+  @media(max-width: 768px) {
+    border-radius: 0;
+  }
 `;
 
 const StyledModalHeader = styled.div`
@@ -70,7 +80,7 @@ const StyledModalTitle = styled.div`
 `;
 
 const StyledModalBody = styled.div`
-  padding-top: 10px;
+  padding-top: 16px;
 `;
 
 const Modal = ({
