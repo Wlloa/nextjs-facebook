@@ -4,6 +4,7 @@ import { StyledProps } from "../../common/props-interface";
 import Image from "next/image";
 import Facebook from "../../public/static/miscellanea/facebook.svg";
 import Modal from "../../components/modal";
+import { CreateAccount } from "../../components/modals/create-account";
 
 export interface AuthProps extends StyledProps {}
 
@@ -23,6 +24,7 @@ function _Auth(props: AuthProps): JSX.Element {
   return (
     <div className={className}>
       <Modal show={showModal} onClose={onClose} title="Sign Up" subtitle="It’s quick and easy.">
+        <CreateAccount/>
       </Modal>
       <Body>
         <LogoSection>
@@ -184,6 +186,7 @@ const SubmitBtn = styled.button`
   margin: 16px 0;
   color: var(--color-white);
   font-weight: bold;
+  cursor: pointer;
 
   transition: 200ms cubic-bezier(0.08, 0.52, 0.52, 1) background-color,
     200ms cubic-bezier(0.08, 0.52, 0.52, 1) box-shadow,
@@ -224,6 +227,7 @@ const CreateAccountBtn = styled.button`
   width: fit-content;
   margin-left: auto;
   margin-right: auto;
+  cursor: pointer;
 
   transition: 200ms cubic-bezier(0.08, 0.52, 0.52, 1) background-color,
     200ms cubic-bezier(0.08, 0.52, 0.52, 1) box-shadow,
