@@ -111,8 +111,6 @@ const Modal = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [show]);
 
-  console.log(show);
-
   const content = show ? (
     <StyledModalOverlay>
       <StyledModalWrapper ref={modalWrapperRef} onClick={backDropHandler}>
