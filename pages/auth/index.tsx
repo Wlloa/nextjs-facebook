@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { StyledProps } from "../../common/props-interface";
 import Image from "next/image";
 import Facebook from "../../public/static/miscellanea/facebook.svg";
 import Modal from "../../components/modal";
 import { CreateAccount } from "../../components/modals/create-account";
+import { Person } from "../../models/person";
+import { getSession, signIn } from "next-auth/react";
+import { useRouter } from "next/router";
+import { GetServerSideProps } from "next";
 
 export interface AuthProps extends StyledProps {}
 
@@ -12,19 +16,62 @@ function _Auth(props: AuthProps): JSX.Element {
   const { className } = props;
   const [showModal, setShowModal] = useState(false);
 
-  const createAccount = (event: any):void => {
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
+
+  const createAccount = (event: any): void => {
     event.preventDefault();
-    setShowModal(current => !current);
+    setShowModal((current) => !current);
   };
 
   const onClose = () => {
     setShowModal(false);
   };
 
+  const onSubmit = async (person: Person) => {
+    console.log(person);
+    setShowModal(false);
+    const response = await fetch("/api/auth/signup", {
+      method: "POST",
+      body: JSON.stringify(person),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || "Something went wrong");
+    }
+
+    return data;
+  };
+
+  const onLogin = async (e: any) => {
+    e.preventDefault();
+    const result = await signIn("credentials", {
+      redirect: false,
+      email: emailRef.current?.value,
+      password: passRef.current?.value,
+    });
+
+    //@ts-ignore
+    if (!result.error) {
+      router.replace("/");
+    }
+    console.log(result);
+  };
+
   return (
     <div className={className}>
-      <Modal show={showModal} onClose={onClose} title="Sign Up" subtitle="It’s quick and easy.">
-        <CreateAccount/>
+      <Modal
+        show={showModal}
+        onClose={onClose}
+        title="Sign Up"
+        subtitle="It’s quick and easy."
+      >
+        <CreateAccount onSubmit={onSubmit} />
       </Modal>
       <Body>
         <LogoSection>
@@ -36,13 +83,17 @@ function _Auth(props: AuthProps): JSX.Element {
         </LogoSection>
         <div>
           <CardForm>
-            <form>
-              <input type="text" placeholder="Email or Phone Number" />
-              <input type="password" placeholder="Password" />
+            <form onSubmit={onLogin}>
+              <input
+                type="text"
+                placeholder="Email or Phone Number"
+                ref={emailRef}
+              />
+              <input type="password" placeholder="Password" ref={passRef} />
               <SubmitBtn type="submit">Log In</SubmitBtn>
               <a href="">Forgot Password?</a>
               <Separator></Separator>
-              <CreateAccountBtn onClick={(event)=> createAccount(event)}>
+              <CreateAccountBtn onClick={(event) => createAccount(event)}>
                 Create New Account
               </CreateAccountBtn>
             </form>
@@ -283,5 +334,22 @@ const Auth = styled(_Auth)`
     min-width: 100vw;
   }
 `;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession({ req: context.req });
+
+  if (session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { session },
+  };
+};
 
 export default Auth;

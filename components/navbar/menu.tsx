@@ -4,6 +4,7 @@ import { StyledProps } from "../../common/props-interface";
 import Messenger from "../../public/static/miscellanea/messenger.svg";
 import Notification from "../../public/static/miscellanea/notification.svg";
 import Image from "next/image";
+import { Dropdown } from "../dropdown/dropdown";
 
 interface ItemProps extends StyledProps {
   url: string;
@@ -11,6 +12,7 @@ interface ItemProps extends StyledProps {
   posY: number;
   height: number;
   width: number;
+  onClick?: () => void;
 }
 
 const IconContainer = styled.div`
@@ -78,9 +80,9 @@ export const AccountWidget = (): JSX.Element => {
 };
 
 export const MenuItem = (props: ItemProps): JSX.Element => {
-  const { posX, posY } = props;
+  const { posX, posY, onClick } = props;
   return (
-    <IconContainer>
+    <IconContainer onClick={onClick}>
       <Icon
         url="https://static.xx.fbcdn.net/rsrc.php/v3/yE/r/R3l5SniutOc.png"
         posX={posX}
@@ -131,13 +133,7 @@ export const Menu = (): JSX.Element => {
           </IconContainer>
         </li>
         <li>
-          <MenuItem
-            url="https://static.xx.fbcdn.net/rsrc.php/v3/yE/r/R3l5SniutOc.png"
-            posX={-126}
-            posY={-128}
-            height={20}
-            width={20}
-          />
+          <Dropdown/>
         </li>
       </UList>
     </div>

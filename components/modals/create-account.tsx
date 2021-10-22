@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { StyledProps } from "../../common/props-interface";
+import { Person } from "../../models/person";
 
 const Input = styled.input`
   font-family: SFProDisplay-Regular, Helvetica, Arial, sans-serif;
@@ -113,27 +114,100 @@ const ButtonSection = styled.div`
   }
 `;
 
-export const CreateAccount = (props: StyledProps) => {
-  const { className } = props;
+interface ModalProps extends StyledProps {
+  onSubmit: (person: Person) => void;
+}
+
+enum Gender {
+  Female = 1,
+  Male,
+  Custom,
+}
+
+export const CreateAccount = (props: ModalProps) => {
+  const { className, onSubmit } = props;
+  const [gender, setGender] = useState(Gender.Female);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const lastRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passRef = useRef<HTMLInputElement>(null);
+  const monthRef = useRef<HTMLSelectElement>(null);
+  const dayRef = useRef<HTMLSelectElement>(null);
+  const yearRef = useRef<HTMLSelectElement>(null);
+
+  const createPersonHandler = (e: any) => {
+    e.preventDefault();
+    if (
+      nameRef.current &&
+      lastRef.current &&
+      emailRef.current &&
+      passRef.current &&
+      dayRef.current &&
+      monthRef.current &&
+      yearRef.current
+    ) {
+      const date = new Date(
+        `${monthRef.current.value}-${dayRef.current.value}-${yearRef.current.value}`
+      ).toLocaleDateString();
+
+      const person: Person = {
+        firstName: nameRef.current.value,
+        lastName: lastRef.current.value,
+        email: emailRef.current.value,
+        password: passRef.current.value,
+        birthday: date,
+        gender: Gender[gender],
+      };
+      onSubmit(person);
+    } 
+  };
+
+  const handleGender = (e: any) => {
+    setGender(e.target.value);
+  };
+
   return (
-    <form className={className}>
+    <form className={className} onSubmit={createPersonHandler}>
       <Row>
-        <MediumInput type="text" name="name" placeholder="First name" />
-        <MediumInput type="text" name="lastName" placeholder="Last name" />
+        <MediumInput
+          type="text"
+          name="name"
+          required
+          minLength={6}
+          placeholder="First name"
+          ref={nameRef}
+        />
+        <MediumInput
+          type="text"
+          name="lastName"
+          placeholder="Last name"
+          required
+          ref={lastRef}
+        />
       </Row>
       <Row>
-        <Input type="text" placeholder="Mobile number or email" />
+        <Input
+          type="email"
+          required
+          placeholder="Mobile number or email"
+          ref={emailRef}
+        />
       </Row>
 
       <Row>
-        <Input type="text" placeholder="New password" />
+        <Input
+          type="password"
+          placeholder="New password"
+          ref={passRef}
+          required
+        />
       </Row>
       <div>
         <LabelRow>
           Birthday <i></i>
         </LabelRow>
         <Row>
-          <Select name="month" id="">
+          <Select name="month" id="" ref={monthRef}>
             <option value="1">Jan</option>
             <option value="2">Feb</option>
             <option value="3">Mar</option>
@@ -147,7 +221,7 @@ export const CreateAccount = (props: StyledProps) => {
             <option value="11">Nov</option>
             <option value="12">Dec</option>
           </Select>
-          <Select name="day" id="">
+          <Select name="day" id="" ref={dayRef}>
             {Array(31)
               .fill(undefined)
               .map((elem, index) => (
@@ -156,7 +230,7 @@ export const CreateAccount = (props: StyledProps) => {
                 </option>
               ))}
           </Select>
-          <Select name="year" id="">
+          <Select name="year" id="" ref={yearRef}>
             {Array(100)
               .fill(undefined)
               .map((elem, index) => (
@@ -173,15 +247,30 @@ export const CreateAccount = (props: StyledProps) => {
       <Row>
         <GenderContainer>
           <label htmlFor="female">Female</label>
-          <input type="radio" name="sex" value="1" id="female" />
+          <input
+            type="radio"
+            name="sex"
+            value={Gender.Female}
+            onChange={handleGender}
+          />
         </GenderContainer>
         <GenderContainer>
           <label htmlFor="male">Male</label>
-          <input type="radio" name="sex" value="2" id="male" />
+          <input
+            type="radio"
+            name="sex"
+            value={Gender.Male}
+            onChange={handleGender}
+          />
         </GenderContainer>
         <GenderContainer>
           <label htmlFor="custom">Custom</label>
-          <input type="radio" name="sex" value="3" id="custom" />
+          <input
+            type="radio"
+            name="sex"
+            value={Gender.Custom}
+            onChange={handleGender}
+          />
         </GenderContainer>
       </Row>
       <SmallPrint>
