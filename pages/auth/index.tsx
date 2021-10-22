@@ -9,12 +9,18 @@ import { Person } from "../../models/person";
 import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
+import { StyledErrorBlock } from "../../components/login/error-block";
 
 export interface AuthProps extends StyledProps {}
 
 function _Auth(props: AuthProps): JSX.Element {
   const { className } = props;
   const [showModal, setShowModal] = useState(false);
+  const [loginError, setLoginError] = useState({
+    state: false,
+    title: null,
+    text: null,
+  });
 
   const emailRef = useRef<HTMLInputElement>(null);
   const passRef = useRef<HTMLInputElement>(null);
@@ -54,12 +60,14 @@ function _Auth(props: AuthProps): JSX.Element {
     if (!result.error) {
       router.replace("/");
     }
-    
+
     return data;
   };
 
   const onLogin = async (e: any) => {
     e.preventDefault();
+
+    setLoginError({state: false, text: null, title: null});
     const result = await signIn("credentials", {
       redirect: false,
       email: emailRef.current?.value,
@@ -69,7 +77,10 @@ function _Auth(props: AuthProps): JSX.Element {
     //@ts-ignore
     if (!result.error) {
       router.replace("/");
+    } else {
+      setLoginError({state: true, title: result.error, text: "Something went wrong"});
     }
+
     console.log(result);
   };
 
@@ -92,6 +103,12 @@ function _Auth(props: AuthProps): JSX.Element {
           <h2>Connect with friends and the world around you on Facebook.</h2>
         </LogoSection>
         <div>
+          {loginError.state && (
+            <StyledErrorBlock
+              title={loginError.title}
+              text={loginError.text}
+            />
+          )}
           <CardForm>
             <form onSubmit={onLogin}>
               <input
