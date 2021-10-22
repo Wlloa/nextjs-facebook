@@ -13,7 +13,7 @@ export default NextAuth({
   },
   providers: [
     CredentialsProvider({
-      //@ts-ignore
+      credentials: {},
       async authorize(credentials: Person, req: NextApiRequest) {
         const client = await connectToDb();
         const personCollection = client.db().collection("person");
