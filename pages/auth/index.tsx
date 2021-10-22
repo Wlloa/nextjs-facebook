@@ -45,6 +45,16 @@ function _Auth(props: AuthProps): JSX.Element {
       throw new Error(data.message || "Something went wrong");
     }
 
+    const result = await signIn("credentials", {
+      redirect: false,
+      email: person.email,
+      password: person.password,
+    });
+
+    if (!result.error) {
+      router.replace("/");
+    }
+    
     return data;
   };
 
