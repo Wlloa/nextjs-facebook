@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { StyledProps } from "../../common/props-interface";
 import Image from "next/image";
 import Facebook from "../../public/static/miscellanea/facebook.svg";
@@ -16,6 +16,7 @@ export interface AuthProps extends StyledProps {}
 function _Auth(props: AuthProps): JSX.Element {
   const { className } = props;
   const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [loginError, setLoginError] = useState({
     state: false,
     title: null,
@@ -38,6 +39,8 @@ function _Auth(props: AuthProps): JSX.Element {
   const onSubmit = async (person: Person) => {
     console.log(person);
     setShowModal(false);
+    setLoading(true);
+
     const response = await fetch("/api/auth/signup", {
       method: "POST",
       body: JSON.stringify(person),
@@ -47,27 +50,32 @@ function _Auth(props: AuthProps): JSX.Element {
     });
 
     const data = await response.json();
+    
     if (!response.ok) {
-      throw new Error(data.message || "Something went wrong");
+      setLoading(false);
+      setLoginError({
+        state: true,
+        title: data.message || "Something went wrong",
+        text: "Try login instead",
+      });
+    } else {
+      const result = await signIn("credentials", {
+        redirect: false,
+        email: person.email,
+        password: person.password,
+      });
+
+      if (!result.error) {
+        router.replace("/");
+      }
     }
 
-    const result = await signIn("credentials", {
-      redirect: false,
-      email: person.email,
-      password: person.password,
-    });
-
-    if (!result.error) {
-      router.replace("/");
-    }
-
-    return data;
   };
 
   const onLogin = async (e: any) => {
     e.preventDefault();
-
-    setLoginError({state: false, text: null, title: null});
+    setLoading(true);
+    setLoginError({ state: false, text: null, title: null });
     const result = await signIn("credentials", {
       redirect: false,
       email: emailRef.current?.value,
@@ -78,7 +86,12 @@ function _Auth(props: AuthProps): JSX.Element {
     if (!result.error) {
       router.replace("/");
     } else {
-      setLoginError({state: true, title: result.error, text: "Something went wrong"});
+      setLoading(false);
+      setLoginError({
+        state: true,
+        title: result.error,
+        text: "Something went wrong",
+      });
     }
 
     console.log(result);
@@ -104,10 +117,7 @@ function _Auth(props: AuthProps): JSX.Element {
         </LogoSection>
         <div>
           {loginError.state && (
-            <StyledErrorBlock
-              title={loginError.title}
-              text={loginError.text}
-            />
+            <StyledErrorBlock title={loginError.title} text={loginError.text} />
           )}
           <CardForm>
             <form onSubmit={onLogin}>
@@ -117,10 +127,15 @@ function _Auth(props: AuthProps): JSX.Element {
                 ref={emailRef}
               />
               <input type="password" placeholder="Password" ref={passRef} />
-              <SubmitBtn type="submit">Log In</SubmitBtn>
+              <SubmitBtn type="submit" isLoading={loading}>
+                Log In
+              </SubmitBtn>
               <a href="">Forgot Password?</a>
               <Separator></Separator>
-              <CreateAccountBtn onClick={(event) => createAccount(event)}>
+              <CreateAccountBtn
+                onClick={(event) => createAccount(event)}
+                isLoading={loading}
+              >
                 Create New Account
               </CreateAccountBtn>
             </form>
@@ -253,7 +268,11 @@ const CardForm = styled.div`
   }
 `;
 
-const SubmitBtn = styled.button`
+interface BtnProps {
+  readonly isLoading: boolean;
+}
+
+const SubmitBtn = styled.button<BtnProps>`
   background-color: #1877f2;
   border: none;
   border-radius: 6px;
@@ -265,6 +284,8 @@ const SubmitBtn = styled.button`
   color: var(--color-white);
   font-weight: bold;
   cursor: pointer;
+  opacity: ${(props):string => props.isLoading ? '0.5': 'none'};
+  pointer-events: ${(props):string => props.isLoading ? 'none': 'all'};
 
   transition: 200ms cubic-bezier(0.08, 0.52, 0.52, 1) background-color,
     200ms cubic-bezier(0.08, 0.52, 0.52, 1) box-shadow,
@@ -286,7 +307,7 @@ const SubmitBtn = styled.button`
   }
 `;
 
-const CreateAccountBtn = styled.button`
+const CreateAccountBtn = styled.button<BtnProps>`
   border: none;
   border-radius: 6px;
   font-size: 17px;
@@ -306,6 +327,8 @@ const CreateAccountBtn = styled.button`
   margin-left: auto;
   margin-right: auto;
   cursor: pointer;
+  pointer-events: ${(props):string => props.isLoading ? 'none': 'all'};
+  opacity: ${(props):string => props.isLoading ? '0.5': 'none'};
 
   transition: 200ms cubic-bezier(0.08, 0.52, 0.52, 1) background-color,
     200ms cubic-bezier(0.08, 0.52, 0.52, 1) box-shadow,
