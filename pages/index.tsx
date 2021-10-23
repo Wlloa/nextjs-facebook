@@ -3,6 +3,11 @@ import styled from "styled-components";
 import { MainFeed } from "../components/home/feed";
 import { POSTS } from "../models/post";
 import { getSession } from "next-auth/react";
+import { PersonContext, PersonDto } from "../context/person-context";
+import { ReactNode, useContext, useState, useEffect } from "react";
+import { connectToDb, searchDocumentByEmail } from "../common/db";
+import { Session } from "next-auth";
+import { Person } from "../models/person";
 
 const MainLayout = styled.div`
   display: flex;
@@ -13,7 +18,20 @@ const LeftContainer = styled.div`
   min-width: 280px;
 `;
 
-const Home: NextPage = (): JSX.Element => {
+interface HomeProps {
+  session: Session;
+  personData: Person;
+  children: ReactNode;
+}
+
+const Home: NextPage = (props: HomeProps): JSX.Element => {
+  const { personData } = props;
+  const { person, setPerson } = useContext(PersonContext);
+
+  useEffect(() => {
+    setPerson(personData);
+  }, []);
+
   return (
     <MainLayout>
       <LeftContainer />
@@ -25,6 +43,7 @@ const Home: NextPage = (): JSX.Element => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession({ req: context.req });
+  console.log(session);
 
   if (!session) {
     return {
@@ -35,8 +54,26 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
+  const client = await connectToDb();
+  const personRaw = await searchDocumentByEmail(
+    client,
+    "person",
+    session.user.email
+  );
+
+  console.log(personRaw);
+  client.close();
+
+  const personData: PersonDto = {
+    email: personRaw.email,
+    firstName: personRaw.firstName,
+    lastName: personRaw.lastName,
+    birthday: personRaw.birthday,
+    gender: personRaw.gender,
+  };
+
   return {
-    props: { session },
+    props: { session, personData },
   };
 };
 
