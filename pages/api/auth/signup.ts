@@ -14,7 +14,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const data: Person = req.body;
 
     const hashedPass = await hashPassword(data.password);
-    const newPerson: Person = { ...data, password: hashedPass };
+    const newPerson: Person = { 
+      ...data, 
+      password: hashedPass,
+      image: null,
+      posts: undefined,
+      wallImage: null,
+      friends: undefined 
+    };
     const client = await connectToDb();
 
     //check first if the user exist in our system

@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { StyledProps } from "../../common/props-interface";
 import Messenger from "../../public/static/miscellanea/messenger.svg";
 import Notification from "../../public/static/miscellanea/notification.svg";
 import Image from "next/image";
 import { Dropdown } from "../dropdown/dropdown";
+import { PersonContext } from "../../context/person-context";
 
 interface ItemProps extends StyledProps {
   url: string;
@@ -62,18 +63,20 @@ const AccountContainer = styled.div`
 `;
 
 export const AccountWidget = (): JSX.Element => {
+  const { person } = useContext(PersonContext);
+  
   return (
     <AccountContainer>
       <a href="">
         <div>
           <Image
             src="/static/miscellanea/me.jpg"
-            alt="Wilber"
+            alt="profile"
             width="28"
             height="28"
           />
         </div>
-        <span>Wilber</span>
+        <span>{person?.firstName}</span>
       </a>
     </AccountContainer>
   );
@@ -133,7 +136,7 @@ export const Menu = (): JSX.Element => {
           </IconContainer>
         </li>
         <li>
-          <Dropdown/>
+          <Dropdown />
         </li>
       </UList>
     </div>
