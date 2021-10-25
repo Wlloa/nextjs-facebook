@@ -6,6 +6,7 @@ import Notification from "../../public/static/miscellanea/notification.svg";
 import Image from "next/image";
 import { Dropdown } from "../dropdown/dropdown";
 import { PersonContext } from "../../context/person-context";
+import { useRouter } from "next/router";
 
 interface ItemProps extends StyledProps {
   url: string;
@@ -64,9 +65,16 @@ const AccountContainer = styled.div`
 
 export const AccountWidget = (): JSX.Element => {
   const { person } = useContext(PersonContext);
-  
+
+  const router = useRouter();
+
+  const goToProfile = (e: any) => {
+    e.preventDefault();
+    router.push("/profile");
+  };
+
   return (
-    <AccountContainer>
+    <AccountContainer onClick={goToProfile}>
       <a href="">
         <div>
           <Image
