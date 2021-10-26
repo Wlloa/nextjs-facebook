@@ -1,13 +1,25 @@
 import { getSession } from "next-auth/react";
 import React from "react";
+import { StyledProps } from "../../common/props-interface";
+import { Person } from "../../models/person";
 
-const Profile = () => {
-  return <div></div>;
+interface ProfileProps extends StyledProps {
+  profile: Person;
+}
+
+const Profile = (props: ProfileProps) => {
+  const { profile } = props;
+  return (
+    <div>
+      <h1>{profile?.firstName}</h1>
+    </div>
+  );
 };
 
 export async function getServerSideProps(context) {
   const session = await getSession({ req: context.req });
 
+  let data;
   if (session) {
     const response = await fetch("http://localhost:3000/api/person", {
       body: JSON.stringify({ email: session.user.email }),
@@ -17,12 +29,11 @@ export async function getServerSideProps(context) {
       },
     });
 
-    const data = await response.json();
-    console.log(data);
+    data = await response.json();
   }
 
   return {
-    props: {},
+    props: { profile: data },
   };
 }
 
