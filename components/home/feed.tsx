@@ -18,7 +18,7 @@ const Feed = (props: PostsProp): JSX.Element => {
 };
 
 export const MainFeed = styled(Feed)`
-  padding: 56px 32px 0;
+  padding: 0 32px;
   min-height: calc(100vh - 56px);
   overflow-y: auto;
   display: flex;

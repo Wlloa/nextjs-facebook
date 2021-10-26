@@ -31,11 +31,12 @@ const ErrorBlock = (props: ErrorProps): JSX.Element => {
 export const StyledErrorBlock = styled(ErrorBlock)`
   background-color: #ffebe8;
   border: 1px solid #dd3c10;
-  padding: 10px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
+  max-width: 396px;
   h3 {
     color: #333;
     font-weight: 700;

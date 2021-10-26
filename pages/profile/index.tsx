@@ -30,6 +30,13 @@ export async function getServerSideProps(context) {
     });
 
     data = await response.json();
+  } else {
+    return {
+      redirect: {
+        destination: "/auth",
+        permanent: false,
+      },
+    };
   }
 
   return {
