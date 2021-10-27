@@ -54,26 +54,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  const client = await connectToDb();
-  const personRaw = await searchDocumentByEmail(
-    client,
-    "person",
-    session.user.email
-  );
+  const result = await fetch("http://localhost:3000/api/person", {
+    method: "POST",
+    body: JSON.stringify({ email: session.user.email }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
-  console.log(personRaw);
-  client.close();
-
-  const personData: PersonDto = {
-    email: personRaw.email,
-    firstName: personRaw.firstName,
-    lastName: personRaw.lastName,
-    birthday: personRaw.birthday,
-    gender: personRaw.gender,
-  };
+  const data = await result.json();
 
   return {
-    props: { session, personData },
+    props: { session, personData: data },
   };
 };
 
