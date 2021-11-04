@@ -17,7 +17,7 @@ const PostHeader = styled.div`
 
 const ImageContainer = styled.a`
   margin-right: 8px;
-  div {
+  span {
     width: 38px;
     height: 38px;
     border-radius: 50%;

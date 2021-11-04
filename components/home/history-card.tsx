@@ -28,7 +28,7 @@ const UserLogo = styled(_UserLogo)`
   top: 12px;
   left: 12px;
   z-index: 5;
-  > div {
+  > span {
     border-radius: 50%;
     border: 2px solid #1877f2;
   }

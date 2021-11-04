@@ -116,7 +116,7 @@ export const AddPost = styled(_AddPost)`
       width: 40px;
       margin-right: 8px;
     }
-    div > div {
+    div > span {
       border-radius: 50%;
     }
   }
