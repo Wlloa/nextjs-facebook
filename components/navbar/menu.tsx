@@ -46,8 +46,10 @@ const AccountContainer = styled.div`
     div {
       width: 28px;
       height: 28px;
-      border-radius: 50%;
       margin-right: 6px;
+      > span {
+        border-radius: 50%;
+      }
     }
     span {
       font-size: 15px;
