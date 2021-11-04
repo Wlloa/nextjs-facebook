@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import styled from "styled-components";
 import { StyledProps } from "../../common/props-interface";
 import Messenger from "../../public/static/miscellanea/messenger.svg";
@@ -7,6 +7,7 @@ import Image from "next/image";
 import { Dropdown } from "../dropdown/dropdown";
 import { PersonContext } from "../../context/person-context";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 interface ItemProps extends StyledProps {
   url: string;
@@ -48,7 +49,7 @@ const AccountContainer = styled.div`
       width: 28px;
       height: 28px;
       margin-right: 6px;
-      > span {
+      span {
         border-radius: 50%;
       }
     }
@@ -66,7 +67,21 @@ const AccountContainer = styled.div`
 `;
 
 export const AccountWidget = (): JSX.Element => {
-  const { person } = useContext(PersonContext);
+  const { person, setPerson } = useContext(PersonContext);
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    if (!person && status === "authenticated") {
+      fetch("http://localhost:3000/api/person", {
+        method: "POST",
+        body: JSON.stringify({ email: session.user.email }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then(response => response.json())
+      .then(data => setPerson(data));
+    }
+  }, [person, status]);
 
   const router = useRouter();
 
