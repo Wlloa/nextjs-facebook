@@ -72,13 +72,7 @@ export const AccountWidget = (): JSX.Element => {
 
   useEffect(() => {
     if (!person && status === "authenticated") {
-      fetch("http://localhost:3000/api/person", {
-        method: "POST",
-        body: JSON.stringify({ email: session.user.email }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }).then(response => response.json())
+      fetch(`http://localhost:3000/api/person?email=${session.user.email}`).then(response => response.json())
       .then(data => setPerson(data));
     }
   }, [person, status]);
@@ -87,7 +81,9 @@ export const AccountWidget = (): JSX.Element => {
 
   const goToProfile = (e: any) => {
     e.preventDefault();
-    router.push("/profile");
+    if(person) {
+      router.push(`/${person.userName}`);
+    }
   };
 
   return (

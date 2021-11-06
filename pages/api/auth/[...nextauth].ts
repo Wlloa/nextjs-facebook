@@ -1,9 +1,9 @@
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { isValidElement } from "react";
-import { connectToDb } from "../../../common/db";
 import { isValidPassword } from "../../../common/utils";
+import { db } from "../../../firebase";
 import { Person } from "../../../models/person";
 
 export default NextAuth({
@@ -15,14 +15,12 @@ export default NextAuth({
     CredentialsProvider({
       credentials: {},
       async authorize(credentials: Person, req: NextApiRequest) {
-        const client = await connectToDb();
-        const personCollection = client.db().collection("person");
-        const person = await personCollection.findOne({
-          email: credentials.email,
-        });
-        if (!person) {
+        const q = query(collection(db, "users"), where("email", "==", credentials.email));
+        const data = await getDocs(q);
+        if (!data.docs[0].exists()) {
           throw new Error("No user found");
         }
+        const person = data.docs[0].data();
 
         const isValid = await isValidPassword(
           person.password,
@@ -32,7 +30,6 @@ export default NextAuth({
         if (!isValid) {
           throw new Error("Wrong password");
         }
-        client.close();
         return { email: credentials.email };
       },
     }),
