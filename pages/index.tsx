@@ -25,11 +25,11 @@ interface HomeProps {
 
 const Home: NextPage = (props: HomeProps): JSX.Element => {
   const { personData } = props;
-  const { person, setPerson } = useContext(PersonContext);
+  const { person, fetchUser } = useContext(PersonContext);
 
-  useEffect(() => {
-    setPerson(personData);
-  }, []);
+  // useEffect(() => {
+  //   setPerson(personData);
+  // }, []);
 
   return (
     <MainLayout>

@@ -5,7 +5,7 @@ import Messenger from "../../public/static/miscellanea/messenger.svg";
 import Notification from "../../public/static/miscellanea/notification.svg";
 import Image from "next/image";
 import { Dropdown } from "../dropdown/dropdown";
-import { PersonContext } from "../../context/person-context";
+import { usePersonContext } from "../../context/person-context";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
@@ -67,21 +67,20 @@ const AccountContainer = styled.div`
 `;
 
 export const AccountWidget = (): JSX.Element => {
-  const { person, setPerson } = useContext(PersonContext);
-  const { data: session, status } = useSession();
+  const { person, fetchUser } = usePersonContext();
+  //const { data: session, status } = useSession();
 
   useEffect(() => {
-    if (!person && status === "authenticated") {
-      fetch(`http://localhost:3000/api/person?email=${session.user.email}`).then(response => response.json())
-      .then(data => setPerson(data));
+    if (!person) {
+      fetchUser();
     }
-  }, [person, status]);
+  }, [person]);
 
   const router = useRouter();
 
   const goToProfile = (e: any) => {
     e.preventDefault();
-    if(person) {
+    if (person) {
       router.push(`/${person.userName}`);
     }
   };

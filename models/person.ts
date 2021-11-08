@@ -1,5 +1,5 @@
 export interface Person {
-  _id?: string;           //this is done because mongoDb
+  id?: string;           //this is done because mongoDb
   firstName: string;
   lastName: string;
   userName?: string;

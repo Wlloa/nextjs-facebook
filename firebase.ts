@@ -1,6 +1,16 @@
-import { initializeApp, getApp, getApps } from "firebase/app";
+import { initializeApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
-import { getFirestore } from "firebase/firestore";
+import {
+  getDatabase,
+  ref,
+  push,
+  set,
+  query,
+  equalTo,
+  get,
+  orderByChild,
+} from "firebase/database";
+import { Person } from "./models/person";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBHPVvayn6o6bzyG1eNC9r6P4DLhJsb57U",
@@ -12,8 +22,28 @@ const firebaseConfig = {
   measurementId: "G-CGEDJ1BW3J",
 };
 
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-const db = getFirestore();
+const app = initializeApp(firebaseConfig);
+const db = getDatabase();
 const storage = getStorage();
 
-export {app, db, storage};
+const createUser = async (user: Person): Promise<string> => {
+  try {
+    const userRef = ref(db, "users");
+    const newUserRef = push(userRef);
+    await set(newUserRef, user);
+    return newUserRef.key;
+  } catch (error) {
+    throw new Error(
+      error.message || "Something went wrong with database write"
+    );
+  }
+};
+
+const getUsers = async (email: string) => {
+  const users = await get(
+    query(ref(db, "users"), orderByChild("email"), equalTo(email))
+  );
+  return users.val();
+};
+
+export { app, db, storage, createUser, getUsers };

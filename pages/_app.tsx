@@ -5,13 +5,13 @@ import { GlobalStyle } from "../common/global";
 import { SessionProvider } from "next-auth/react";
 import { PersonContextProvider } from "../context/person-context";
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
-    <SessionProvider session={pageProps.session}>
+    <SessionProvider session={session}>
       <PersonContextProvider>
         <GlobalStyle />
         <Layout>
-          <Component {...pageProps} />
+          <Component {...pageProps.pageProps} />
         </Layout>
       </PersonContextProvider>
     </SessionProvider>

@@ -3,7 +3,7 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import formidable from "formidable";
 import fs from "fs";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { db } from "../../firebase";
+import { db, getUsers } from "../../firebase";
 
 export const config = {
   api: {
@@ -17,25 +17,14 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     const data = req.query.email;
-    const q = query(
-      collection(db, "users"),
-      where("email", "==", String(data))
-    );
-    const personData = await getDocs(q);
+    const personData = await getUsers(String(data));
 
-    if (!personData.docs.length) {
+    if (!personData) {
       res.status(404).json({ message: "Not Found user" });
     }
-    const personRaw = personData.docs[0].data();
-    // console.log(data);
-    //const personCollection = await readDocs("users", String(data))
-    // personCollection.forEach((doc)=> {
-    //   console.log(doc.id, " => ", doc.data());
-    // })
-    //const personRaw = personCollection.docs[0].data();
-    //console.log("test GET", personRaw);
-    // const client = await connectToDb();
-    // const personRaw = await searchDocumentByEmail(client, "person", String(data));
+    const personId = Object.keys(personData)[0];
+    const personRaw = { ...personData[personId], id: personId };
+    
     res.status(201).json(personRaw);
   } else if (req.method === "PUT") {
     const form = new formidable.IncomingForm({ keepExtensions: true });

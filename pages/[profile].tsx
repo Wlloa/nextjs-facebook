@@ -16,9 +16,7 @@ const Profile = (props: ProfileProps) => {
 
     const body = new FormData();
     body.append("profilePic", picture);
-    //formData.append("email", profile.email);
-    //const person = { ...profile, image: picture };
-    //console.log(body);
+    
     const response = await fetch("http://localhost:3000/api/person", {
       method: "PUT",
       body,

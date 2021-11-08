@@ -173,7 +173,7 @@ export const CreateAccount = (props: ModalProps) => {
           type="text"
           name="name"
           required
-          minLength={6}
+          minLength={3}
           placeholder="First name"
           ref={nameRef}
         />
