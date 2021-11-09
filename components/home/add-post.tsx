@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { StyledProps } from "../../common/props-interface";
 import Image from "next/image";
 import { Icon } from "../navbar/menu";
+import { usePersonContext } from "../../context/person-context";
 
 const AddPostFooter = styled.div`
   width: 100%;
@@ -41,12 +42,15 @@ const AddPostFooter = styled.div`
 
 const _AddPost = (props: StyledProps): JSX.Element => {
   const { className } = props;
+  const {person} = usePersonContext();
+
   return (
     <div className={className}>
       <form>
         <div>
-          <Image
-            src="/static/miscellanea/me.jpg"
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={person?.image}
             width={40}
             height={40}
             alt=""
@@ -116,7 +120,7 @@ export const AddPost = styled(_AddPost)`
       width: 40px;
       margin-right: 8px;
     }
-    div > span {
+    div > img {
       border-radius: 50%;
     }
   }

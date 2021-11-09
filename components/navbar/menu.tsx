@@ -52,6 +52,9 @@ const AccountContainer = styled.div`
       span {
         border-radius: 50%;
       }
+      img {
+        border-radius: 50%;
+      }
     }
     span {
       font-size: 15px;
@@ -89,8 +92,13 @@ export const AccountWidget = (): JSX.Element => {
     <AccountContainer onClick={goToProfile}>
       <a href="">
         <div>
-          <Image
-            src="/static/miscellanea/me.jpg"
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={
+              person
+                ? person.image
+                : "/static/miscellanea/empty-profile.png"
+            }
             alt="profile"
             width="28"
             height="28"

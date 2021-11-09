@@ -12,7 +12,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const newPerson: Person = {
       ...data,
       password: hashedPass,
-      image: null,
+      image: "/static/miscellanea/empty-profile.png",
       posts: null,
       wallImage: null,
       friends: null,

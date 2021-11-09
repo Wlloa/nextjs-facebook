@@ -7,8 +7,8 @@ export interface Person {
   password: string;
   birthday?: string;
   gender?: string;
-  image?: {};
-  wallImage?: {};
+  image?: string;
+  wallImage?: string;
   friends?: string[];
   posts?: string[];
 }

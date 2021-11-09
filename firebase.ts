@@ -1,5 +1,11 @@
 import { initializeApp } from "firebase/app";
-import { getStorage } from "firebase/storage";
+import {
+  getDownloadURL,
+  getStorage,
+  ref as storageRef,
+  uploadString,
+  uploadBytes,
+} from "firebase/storage";
 import {
   getDatabase,
   ref,
@@ -9,8 +15,11 @@ import {
   equalTo,
   get,
   orderByChild,
+  update,
 } from "firebase/database";
 import { Person } from "./models/person";
+import formidable from "formidable";
+import fs from "fs";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBHPVvayn6o6bzyG1eNC9r6P4DLhJsb57U",
@@ -24,7 +33,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase();
-const storage = getStorage();
+const storage = getStorage(app);
 
 const createUser = async (user: Person): Promise<string> => {
   try {
@@ -39,6 +48,13 @@ const createUser = async (user: Person): Promise<string> => {
   }
 };
 
+const updateUser = async (user: Person): Promise<void> => {
+  const dbRef = ref(db, "users");
+  console.log(user);
+  const result = await update(dbRef, { [`${user.id}`]: user });
+  console.log("update result", result);
+};
+
 const getUsers = async (email: string) => {
   const users = await get(
     query(ref(db, "users"), orderByChild("email"), equalTo(email))
@@ -46,4 +62,20 @@ const getUsers = async (email: string) => {
   return users.val();
 };
 
-export { app, db, storage, createUser, getUsers };
+const uploadImage = async (image, id): Promise<string> => {
+  const imageRef = storageRef(storage, `profiles/${id}/image`);
+
+  console.log(image);
+  const snap = await uploadBytes(imageRef, image);
+  //console.log(snap);
+  const downloadURL = await getDownloadURL(imageRef);
+  console.log(snap, downloadURL);
+  return downloadURL;
+};
+
+const downloadImage = async (imageUrl: string): Promise<string> => {
+  const bucketUrl = storageRef(storage, imageUrl);
+  return await getDownloadURL(bucketUrl);
+};
+
+export { app, db, storage, createUser, getUsers, uploadImage, updateUser };
