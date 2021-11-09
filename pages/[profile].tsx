@@ -3,12 +3,17 @@ import { getSession } from "next-auth/react";
 import React from "react";
 import styled from "styled-components";
 import { StyledProps } from "../common/props-interface";
-import { UploadPicture } from "../components/profile/upload-picture";
+import { UploadPicture, UploadWallPicture } from "../components/profile/upload-picture";
 import { Person } from "../models/person";
 
 interface ProfileProps {
   profile: Person;
 }
+
+export const ImageType = {
+  profile: "profiles",
+  wall: "wall",
+};
 
 const ProfileContainer = styled.div`
   display: flex;
@@ -35,6 +40,7 @@ const ImageContainer = styled.div`
 const WallImageContainer = styled.div`
   max-width: 940px;
   min-width: 705px;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -43,6 +49,7 @@ const WallImageContainer = styled.div`
   overflow: hidden;
   border-bottom-right-radius: 8px;
   border-bottom-left-radius: 8px;
+  
 
   img {
     background-size: cover;
@@ -58,7 +65,7 @@ const InfoContainer = styled.div`
   width: 100%;
   align-items: center;
   justify-content: center;
-  padding-top: 16px;
+  padding-top: 32px;
 `;
 
 const ImageAction = styled.div`
@@ -89,21 +96,19 @@ const ProfileImage = styled.div`
   }
 `;
 
-
-
 const Profile = ({ profile }: ProfileProps): JSX.Element => {
   console.log(profile);
 
-  const uploadPicture = async (picture: any) => {
+  const uploadPicture = async (picture: any, type: string) => {
     console.log(picture);
     const body = new FormData();
-    body.append("profilePic", picture);
-
+    body.append("image", picture);
+    body.append("type", type);
+    console.log(body.get('type'));
     fetch("http://localhost:3000/api/person", {
       method: "PUT",
       body,
-    })
-    .then(response => {
+    }).then((response) => {
       window.location.reload();
     });
   };
@@ -116,11 +121,9 @@ const Profile = ({ profile }: ProfileProps): JSX.Element => {
         </ProfileImage>
         <UploadPicture onSubmit={uploadPicture} />
         <WallImageContainer>
-          <img src="/static/miscellanea/cover.jpg" alt="" />
+          <img src={profile?.wallImage} alt="" />
           <ImageAction>
-            <div></div>
-
-            <div></div>
+            <UploadWallPicture onSubmit={uploadPicture}></UploadWallPicture>
           </ImageAction>
         </WallImageContainer>
         <InfoContainer>

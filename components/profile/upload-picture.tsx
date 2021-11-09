@@ -1,9 +1,10 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { StyledProps } from "../../common/props-interface";
+import { ImageType } from "../../pages/[profile]";
 
 interface UploadPictProps extends StyledProps {
-  onSubmit: (image: FormData) => void;
+  onSubmit: (image: FormData, type: string) => void;
 }
 
 const ChangeProfilePic = styled.div`
@@ -31,26 +32,25 @@ const ChangeProfilePic = styled.div`
   }
 `;
 
+const WallPicture = styled.div`
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+`;
+
 
 export const UploadPicture = (props: UploadPictProps) => {
-  const { className, onSubmit } = props;
+  const { onSubmit } = props;
   const [image, setImage] = useState(null);
-  const [objectURL, setObjectURL] = useState(null);
-
   const imagePicker = useRef(null);
 
   const onFileChange = (e: any) => {
     e.preventDefault();
     if (e.target.files && e.target.files[0]) {
       setImage(e.target.files[0]);
-      setObjectURL(URL.createObjectURL(e.target.files[0]));
-      onSubmit(e.target.files[0]);
+      onSubmit(e.target.files[0], ImageType.profile);
     }
-  };
-
-  const submitPicture = (e: any) => {
-    e.preventDefault();
-    onSubmit(image);
   };
 
   return (
@@ -59,7 +59,34 @@ export const UploadPicture = (props: UploadPictProps) => {
         <i></i>
       </ChangeProfilePic>
       <input ref={imagePicker} type="file" name="image" onChange={onFileChange} hidden />
-      {/* <button type="submit" onClick={submitPicture}>Upload</button> */}
+    </div>
+
+  );
+};
+
+export const UploadWallPicture = (props: UploadPictProps) => {
+  const { onSubmit } = props;
+  const [image, setImage] = useState(null);
+  const imagePicker = useRef(null);
+
+  const onFileChange = (e: any) => {
+    e.preventDefault();
+    if (e.target.files && e.target.files[0]) {
+      setImage(e.target.files[0]);
+      onSubmit(e.target.files[0], ImageType.wall);
+    }
+  };
+
+  return (
+    <div>
+      <WallPicture onClick={()=> imagePicker.current.click()}>
+        <button>
+        <i></i>
+        <span>Edit Cover Photo</span>
+        </button>
+        
+      </WallPicture>
+      <input ref={imagePicker} type="file" name="image" onChange={onFileChange} hidden />
     </div>
 
     // </form>

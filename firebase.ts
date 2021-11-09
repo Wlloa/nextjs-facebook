@@ -62,12 +62,11 @@ const getUsers = async (email: string) => {
   return users.val();
 };
 
-const uploadImage = async (image, id): Promise<string> => {
-  const imageRef = storageRef(storage, `profiles/${id}/image`);
+const uploadImage = async (image: Buffer, id: string, bucket: string, name: string): Promise<string> => {
+  const imageRef = storageRef(storage, `${id}/${bucket}/${name}`);
 
   console.log(image);
   const snap = await uploadBytes(imageRef, image);
-  //console.log(snap);
   const downloadURL = await getDownloadURL(imageRef);
   console.log(snap, downloadURL);
   return downloadURL;

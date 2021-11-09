@@ -5,6 +5,7 @@ import fs from "fs";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import { db, getUsers, updateUser, uploadImage } from "../../firebase";
+import { ImageType } from "../[profile]";
 
 export const config = {
   api: {
@@ -27,7 +28,6 @@ export default async function handler(
     const personRaw = { ...personData[personId], id: personId };
 
     return res.status(200).json(personRaw);
-
   } else if (req.method === "PUT") {
     //Update profile
     // 1. Obtain the user through user session
@@ -42,15 +42,22 @@ export default async function handler(
     const form = new formidable.IncomingForm({ keepExtensions: true });
     let imagePath;
     form.parse(req, async (err, fields, files) => {
-      const image = saveFile(files.profilePic);
-      imagePath = await uploadImage(image, personId);
+      const type = fields.type;
+      const image = saveFile(files.image);
+      //@ts-ignore
+      imagePath = await uploadImage(image, personId, String(type), files.image.originalFilename);
+      
       if (imagePath) {
-        personRaw.image = imagePath;
+        if (String(type) === ImageType.profile) {
+          personRaw.image = imagePath;
+        } else {
+          personRaw.wallImage = imagePath;
+        }
+
         updateUser(personRaw);
         res.status(201).json({ message: "ok" });
       }
     });
-    
   } else {
     res.status(400).json({ message: "Bad request" });
   }
