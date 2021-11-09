@@ -11,7 +11,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
       <PersonContextProvider>
         <GlobalStyle />
         <Layout>
-          <Component {...pageProps.pageProps} />
+          <Component {...pageProps} />
         </Layout>
       </PersonContextProvider>
     </SessionProvider>

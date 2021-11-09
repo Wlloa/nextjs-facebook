@@ -26,7 +26,8 @@ export default async function handler(
     const personId = Object.keys(personData)[0];
     const personRaw = { ...personData[personId], id: personId };
 
-    res.status(201).json(personRaw);
+    return res.status(200).json(personRaw);
+
   } else if (req.method === "PUT") {
     //Update profile
     // 1. Obtain the user through user session

@@ -1,49 +1,144 @@
+import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 import React from "react";
+import styled from "styled-components";
 import { StyledProps } from "../common/props-interface";
 import { UploadPicture } from "../components/profile/upload-picture";
 import { Person } from "../models/person";
 
-interface ProfileProps extends StyledProps {
+interface ProfileProps {
   profile: Person;
 }
 
-const Profile = (props: ProfileProps) => {
-  const { profile } = props;
+const ProfileContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const ImageContainer = styled.div`
+  background-image: linear-gradient(
+    to top,
+    #ffffff,
+    rgba(255, 255, 255.9),
+    rgba(255, 255, 255, 0.7),
+    rgba(255, 255, 255, 0.4),
+    rgba(255, 255, 255, 0)
+  );
+  height: 507px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+`;
+
+const WallImageContainer = styled.div`
+  max-width: 940px;
+  min-width: 705px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  max-height: 348px;
+  overflow: hidden;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+
+  img {
+    background-size: cover;
+    border-style: solid;
+    border-width: 0;
+  }
+`;
+
+const InfoContainer = styled.div`
+  display: flex;
+  height: 80px;
+  padding-bottom: 16px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding-top: 16px;
+`;
+
+const ImageAction = styled.div`
+  display: flex;
+  position: absolute;
+  bottom: 0;
+  background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.6));
+  width: 100%;
+  height: 80px;
+  justify-content: space-between;
+`;
+
+const ProfileImage = styled.div`
+  border-radius: 50%;
+  width: 168px;
+  height: 168px;
+  position: absolute;
+  bottom: 133px;
+  z-index: 5;
+  background-color: var(--color-white);
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 4px;
+    border-color: var(--color-white);
+  }
+`;
+
+
+
+const Profile = ({ profile }: ProfileProps): JSX.Element => {
+  console.log(profile);
 
   const uploadPicture = async (picture: any) => {
-    //console.log(picture);
-
+    console.log(picture);
     const body = new FormData();
     body.append("profilePic", picture);
-    
-    const response = await fetch("http://localhost:3000/api/person", {
+
+    fetch("http://localhost:3000/api/person", {
       method: "PUT",
       body,
-      
+    })
+    .then(response => {
+      window.location.reload();
     });
-    const responseData = await response.json();
-    console.log(responseData);
   };
 
   return (
-    <div>
-      <h1>{profile?.firstName}</h1>
-      <UploadPicture onSubmit={uploadPicture} />
-    </div>
+    <ProfileContainer>
+      <ImageContainer>
+        <ProfileImage>
+          <img src={profile?.image} alt="" />
+        </ProfileImage>
+        <UploadPicture onSubmit={uploadPicture} />
+        <WallImageContainer>
+          <img src="/static/miscellanea/cover.jpg" alt="" />
+          <ImageAction>
+            <div></div>
+
+            <div></div>
+          </ImageAction>
+        </WallImageContainer>
+        <InfoContainer>
+          {profile && (
+            <h2>
+              {profile.firstName} {profile.lastName}
+            </h2>
+          )}
+        </InfoContainer>
+      </ImageContainer>
+    </ProfileContainer>
   );
 };
 
-export async function getServerSideProps(context) {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession({ req: context.req });
 
-  let data = null;
-  if (session) {
-    const response = await fetch(
-      `http://localhost:3000/api/person?email=${session.user.email}`
-    );
-    data = await response.json();
-  } else {
+  if (!session) {
     return {
       redirect: {
         destination: "/auth",
@@ -52,9 +147,14 @@ export async function getServerSideProps(context) {
     };
   }
 
+  const response = await fetch(
+    `http://localhost:3000/api/person?email=${session.user.email}`
+  );
+  const data = await response.json();
+
   return {
     props: { profile: data },
   };
-}
+};
 
 export default Profile;

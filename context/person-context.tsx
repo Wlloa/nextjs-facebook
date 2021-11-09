@@ -38,7 +38,6 @@ export const PersonContextProvider = ({ children }: IProvider) => {
         `http://localhost:3000/api/person?email=${session?.user.email}`
       );
       const person = await personData.json();
-      console.log(person);
       setPerson(person);
     }
   };

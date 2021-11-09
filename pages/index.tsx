@@ -27,9 +27,7 @@ const Home: NextPage = (props: HomeProps): JSX.Element => {
   const { personData } = props;
   const { person, fetchUser } = useContext(PersonContext);
 
-  // useEffect(() => {
-  //   setPerson(personData);
-  // }, []);
+  console.log(personData);
 
   return (
     <MainLayout>
