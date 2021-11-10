@@ -41,6 +41,7 @@ const WallImageContainer = styled.div`
   max-width: 940px;
   min-width: 705px;
   height: 100%;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -49,6 +50,7 @@ const WallImageContainer = styled.div`
   overflow: hidden;
   border-bottom-right-radius: 8px;
   border-bottom-left-radius: 8px;
+  background-color: var(--color-dark-blue);
   
 
   img {

@@ -49,20 +49,33 @@ const createUser = async (user: Person): Promise<string> => {
 };
 
 const updateUser = async (user: Person): Promise<void> => {
-  const dbRef = ref(db, "users");
-  console.log(user);
-  const result = await update(dbRef, { [`${user.id}`]: user });
-  console.log("update result", result);
+  try {
+    const dbRef = ref(db, "users");
+    console.log(user);
+    const result = await update(dbRef, { [`${user.id}`]: user });
+    console.log("update result", result);
+  } catch (error) {
+    throw new Error(error.message || "Something went wrong updating user");
+  }
 };
 
 const getUsers = async (email: string) => {
-  const users = await get(
-    query(ref(db, "users"), orderByChild("email"), equalTo(email))
-  );
-  return users.val();
+  try {
+    const users = await get(
+      query(ref(db, "users"), orderByChild("email"), equalTo(email))
+    );
+    return users.val();
+  } catch (error) {
+    throw new Error(error.message || "Something went wrong getting user");
+  }
 };
 
-const uploadImage = async (image: Buffer, id: string, bucket: string, name: string): Promise<string> => {
+const uploadImage = async (
+  image: Buffer,
+  id: string,
+  bucket: string,
+  name: string
+): Promise<string> => {
   const imageRef = storageRef(storage, `${id}/${bucket}/${name}`);
 
   console.log(image);

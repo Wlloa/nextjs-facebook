@@ -34,11 +34,32 @@ const ChangeProfilePic = styled.div`
 
 const WallPicture = styled.div`
   position: absolute;
-  right: 0;
-  bottom: 0;
+  right: 16px;
+  bottom: 16px;
   z-index: 5;
-`;
+  cursor: pointer;
 
+  > button {
+    padding: 4px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  i {
+    background-image: url(/static/miscellanea/L6YgZDYsHgO.png);
+    background-position: -25px -355px;
+    background-size: auto;
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    margin-right: 4px;
+  }
+`;
 
 export const UploadPicture = (props: UploadPictProps) => {
   const { onSubmit } = props;
@@ -55,12 +76,17 @@ export const UploadPicture = (props: UploadPictProps) => {
 
   return (
     <div>
-      <ChangeProfilePic onClick={()=> imagePicker.current.click()}>
+      <ChangeProfilePic onClick={() => imagePicker.current.click()}>
         <i></i>
       </ChangeProfilePic>
-      <input ref={imagePicker} type="file" name="image" onChange={onFileChange} hidden />
+      <input
+        ref={imagePicker}
+        type="file"
+        name="image"
+        onChange={onFileChange}
+        hidden
+      />
     </div>
-
   );
 };
 
@@ -79,14 +105,19 @@ export const UploadWallPicture = (props: UploadPictProps) => {
 
   return (
     <div>
-      <WallPicture onClick={()=> imagePicker.current.click()}>
+      <WallPicture onClick={() => imagePicker.current.click()}>
         <button>
-        <i></i>
-        <span>Edit Cover Photo</span>
+          <i></i>
+          <span>Edit Cover Photo</span>
         </button>
-        
       </WallPicture>
-      <input ref={imagePicker} type="file" name="image" onChange={onFileChange} hidden />
+      <input
+        ref={imagePicker}
+        type="file"
+        name="image"
+        onChange={onFileChange}
+        hidden
+      />
     </div>
 
     // </form>
