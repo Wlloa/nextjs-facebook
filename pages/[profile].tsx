@@ -117,7 +117,7 @@ const Profile = ({ profile }: ProfileProps): JSX.Element => {
     body.append("image", picture);
     body.append("type", type);
     console.log(body.get('type'));
-    fetch("http://localhost:3000/api/person", {
+    fetch(`${process.env.SERVER_HOST}/api/person`, {
       method: "PUT",
       body,
     }).then((response) => {
@@ -165,7 +165,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   const response = await fetch(
-    `http://localhost:3000/api/person?email=${session.user.email}`
+    `${process.env.SERVER_HOST}api/person?email=${session.user.email}`
   );
   const data = await response.json();
 
