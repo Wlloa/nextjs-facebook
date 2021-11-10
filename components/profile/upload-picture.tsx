@@ -2,9 +2,10 @@ import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { StyledProps } from "../../common/props-interface";
 import { ImageType } from "../../pages/[profile]";
+import Compressor from "compressorjs";
 
 interface UploadPictProps extends StyledProps {
-  onSubmit: (image: FormData, type: string) => void;
+  onSubmit: (image: File | Blob, type: string) => void;
 }
 
 const ChangeProfilePic = styled.div`
@@ -69,8 +70,13 @@ export const UploadPicture = (props: UploadPictProps) => {
   const onFileChange = (e: any) => {
     e.preventDefault();
     if (e.target.files && e.target.files[0]) {
-      setImage(e.target.files[0]);
-      onSubmit(e.target.files[0], ImageType.profile);
+      new Compressor(e.target.files[0], {
+        quality: 0.6,
+        success(result) {
+          setImage(result);
+          onSubmit(result, ImageType.profile);
+        },
+      });
     }
   };
 
@@ -98,8 +104,14 @@ export const UploadWallPicture = (props: UploadPictProps) => {
   const onFileChange = (e: any) => {
     e.preventDefault();
     if (e.target.files && e.target.files[0]) {
-      setImage(e.target.files[0]);
-      onSubmit(e.target.files[0], ImageType.wall);
+      new Compressor(e.target.files[0], {
+        quality: 0.6,
+        success(result) {
+          setImage(result);
+          onSubmit(result, ImageType.wall);
+        },
+      });
+      
     }
   };
 
