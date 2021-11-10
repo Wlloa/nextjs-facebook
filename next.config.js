@@ -15,6 +15,6 @@ module.exports = {
     ],
   },
   env: {
-    SERVER_HOST: process.env.SERVER_HOST,
+    NEXT_PUBLIC_SERVER_HOST: process.env.SERVER_HOST,
   },
 };
