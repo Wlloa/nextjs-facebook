@@ -119,10 +119,12 @@ const Profile = ({ profile }: ProfileProps): JSX.Element => {
     <ProfileContainer>
       <ImageContainer>
         <ProfileImage>
+           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={profile?.image} alt="" />
         </ProfileImage>
         <UploadPicture onSubmit={uploadPicture} />
         <WallImageContainer>
+           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={profile?.wallImage} alt="" />
           <ImageAction>
             <UploadWallPicture onSubmit={uploadPicture}></UploadWallPicture>
