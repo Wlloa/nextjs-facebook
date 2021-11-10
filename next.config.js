@@ -14,7 +14,5 @@ module.exports = {
       "https://firebasestorage.googleapis.com/v0/b/next-facebook-7830a.appspot.com/o/profiles",
     ],
   },
-  env: {
-    NEXT_PUBLIC_SERVER_HOST: process.env.SERVER_HOST,
-  },
+  
 };
