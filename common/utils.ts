@@ -9,3 +9,7 @@ export async function isValidPassword(hashedPass: string, password: string): Pro
     const isValid = await compare(password, hashedPass);
     return isValid;
 }
+
+export default function createUserName(name: string, lastName: string): string {
+    return `${name.toLowerCase()}.${lastName.replace(/ /g, '').toLowerCase()}`;
+}

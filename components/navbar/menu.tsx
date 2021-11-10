@@ -1,11 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import styled from "styled-components";
 import { StyledProps } from "../../common/props-interface";
 import Messenger from "../../public/static/miscellanea/messenger.svg";
 import Notification from "../../public/static/miscellanea/notification.svg";
 import Image from "next/image";
 import { Dropdown } from "../dropdown/dropdown";
-import { PersonContext } from "../../context/person-context";
+import { usePersonContext } from "../../context/person-context";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 interface ItemProps extends StyledProps {
   url: string;
@@ -47,7 +49,10 @@ const AccountContainer = styled.div`
       width: 28px;
       height: 28px;
       margin-right: 6px;
-      > span {
+      span {
+        border-radius: 50%;
+      }
+      img {
         border-radius: 50%;
       }
     }
@@ -65,14 +70,35 @@ const AccountContainer = styled.div`
 `;
 
 export const AccountWidget = (): JSX.Element => {
-  const { person } = useContext(PersonContext);
-  
+  const { person, fetchUser } = usePersonContext();
+  //const { data: session, status } = useSession();
+
+  useEffect(() => {
+    if (!person) {
+      fetchUser();
+    }
+  }, [person]);
+
+  const router = useRouter();
+
+  const goToProfile = (e: any) => {
+    e.preventDefault();
+    if (person) {
+      router.push(`/${person.userName}`);
+    }
+  };
+
   return (
-    <AccountContainer>
+    <AccountContainer onClick={goToProfile}>
       <a href="">
         <div>
-          <Image
-            src="/static/miscellanea/me.jpg"
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={
+              person
+                ? person.image
+                : "/static/miscellanea/empty-profile.png"
+            }
             alt="profile"
             width="28"
             height="28"
