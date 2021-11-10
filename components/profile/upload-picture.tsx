@@ -22,6 +22,10 @@ const ChangeProfilePic = styled.div`
   z-index: 5;
   cursor: pointer;
 
+  @media(max-width: 768px) {
+    left: 60%;
+  }
+
   i {
     background-image: url(/static/miscellanea/L6YgZDYsHgO.png);
     background-position: -25px -355px;
@@ -39,6 +43,17 @@ const WallPicture = styled.div`
   bottom: 16px;
   z-index: 5;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    button {
+      i {
+        margin-right: 0px;
+      }
+      span {
+        display: none;
+      }
+    }
+  }
 
   > button {
     padding: 4px;
@@ -111,7 +126,6 @@ export const UploadWallPicture = (props: UploadPictProps) => {
           onSubmit(result, ImageType.wall);
         },
       });
-      
     }
   };
 
