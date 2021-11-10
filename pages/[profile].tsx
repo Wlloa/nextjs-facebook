@@ -51,7 +51,17 @@ const WallImageContainer = styled.div`
   border-bottom-right-radius: 8px;
   border-bottom-left-radius: 8px;
   background-color: var(--color-dark-blue);
-  
+
+  @media(max-width: 1200px) {
+    max-width: unset;
+    min-width: unset;
+    border-radius: unset;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
 
   img {
     background-size: cover;

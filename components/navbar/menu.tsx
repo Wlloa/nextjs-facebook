@@ -42,6 +42,11 @@ export const Icon = styled.i`
 
 const AccountContainer = styled.div`
   margin-right: 20px;
+  
+  @media (max-width: 768px) {
+    margin-right: 0;
+  }
+
   a {
     display: flex;
     align-items: center;
@@ -65,6 +70,11 @@ const AccountContainer = styled.div`
       line-height: 1.33;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+    @media (max-width: 768px) {
+      span {
+        display: none;
+      }
     }
   }
 `;
@@ -95,9 +105,7 @@ export const AccountWidget = (): JSX.Element => {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={
-              person
-                ? person.image
-                : "/static/miscellanea/empty-profile.png"
+              person ? person.image : "/static/miscellanea/empty-profile.png"
             }
             alt="profile"
             width="28"
@@ -130,6 +138,7 @@ const UList = styled.ul`
   li {
     display: flex;
     align-items: center;
+    justify-content: center;
     margin-right: 8px;
   }
   li:last-of-type {

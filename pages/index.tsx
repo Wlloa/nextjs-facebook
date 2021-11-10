@@ -10,7 +10,7 @@ import { Person } from "../models/person";
 
 const MainLayout = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 `;
 
 const LeftContainer = styled.div`
@@ -31,9 +31,9 @@ const Home: NextPage = (props: HomeProps): JSX.Element => {
 
   return (
     <MainLayout>
-      <LeftContainer />
+      {/* <LeftContainer /> */}
       <MainFeed posts={POSTS} />
-      <LeftContainer />
+      {/* <LeftContainer /> */}
     </MainLayout>
   );
 };

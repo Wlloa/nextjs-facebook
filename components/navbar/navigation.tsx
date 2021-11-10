@@ -9,6 +9,9 @@ const UList = styled.ul`
   display: flex;
   flex-grow: 1;
   justify-content: center;
+  @media(max-width: 1200px) {
+    display: none;
+  }
 `;
 
 const ItemList = styled.li`
