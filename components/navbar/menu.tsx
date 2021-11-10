@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import styled from "styled-components";
 import { StyledProps } from "../../common/props-interface";
 import Messenger from "../../public/static/miscellanea/messenger.svg";
 import Notification from "../../public/static/miscellanea/notification.svg";
 import Image from "next/image";
 import { Dropdown } from "../dropdown/dropdown";
+import { usePersonContext } from "../../context/person-context";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 interface ItemProps extends StyledProps {
   url: string;
@@ -39,14 +42,24 @@ export const Icon = styled.i`
 
 const AccountContainer = styled.div`
   margin-right: 20px;
+  
+  @media (max-width: 768px) {
+    margin-right: 0;
+  }
+
   a {
     display: flex;
     align-items: center;
     div {
       width: 28px;
       height: 28px;
-      border-radius: 50%;
       margin-right: 6px;
+      span {
+        border-radius: 50%;
+      }
+      img {
+        border-radius: 50%;
+      }
     }
     span {
       font-size: 15px;
@@ -58,22 +71,48 @@ const AccountContainer = styled.div`
       overflow: hidden;
       text-overflow: ellipsis;
     }
+    @media (max-width: 768px) {
+      span {
+        display: none;
+      }
+    }
   }
 `;
 
 export const AccountWidget = (): JSX.Element => {
+  const { person, fetchUser } = usePersonContext();
+  //const { data: session, status } = useSession();
+
+  useEffect(() => {
+    if (!person) {
+      fetchUser();
+    }
+  }, [person]);
+
+  const router = useRouter();
+
+  const goToProfile = (e: any) => {
+    e.preventDefault();
+    if (person) {
+      router.push(`/${person.userName}`);
+    }
+  };
+
   return (
-    <AccountContainer>
+    <AccountContainer onClick={goToProfile}>
       <a href="">
         <div>
-          <Image
-            src="/static/miscellanea/me.jpg"
-            alt="Wilber"
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={
+              person ? person.image : "/static/miscellanea/empty-profile.png"
+            }
+            alt="profile"
             width="28"
             height="28"
           />
         </div>
-        <span>Wilber</span>
+        <span>{person?.firstName}</span>
       </a>
     </AccountContainer>
   );
@@ -99,6 +138,7 @@ const UList = styled.ul`
   li {
     display: flex;
     align-items: center;
+    justify-content: center;
     margin-right: 8px;
   }
   li:last-of-type {
@@ -133,7 +173,7 @@ export const Menu = (): JSX.Element => {
           </IconContainer>
         </li>
         <li>
-          <Dropdown/>
+          <Dropdown />
         </li>
       </UList>
     </div>

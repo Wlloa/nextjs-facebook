@@ -9,4 +9,7 @@ module.exports = {
     });
     return config;
   },
+  images: {
+    domains: ['https://firebasestorage.googleapis.com/v0/b/next-facebook-7830a.appspot.com/o/profiles']
+  }
 };

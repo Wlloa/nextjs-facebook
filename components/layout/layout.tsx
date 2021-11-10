@@ -10,6 +10,8 @@ interface Props {
 const Container = styled.main`
   background-color: #f0f2f5;
   min-height: calc(100vh - 56px);
+  margin-top: 56px;
+  width: 100vw;
 `;
 
 const Layout = ({ children }: Props): JSX.Element => {

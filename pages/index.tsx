@@ -3,22 +3,37 @@ import styled from "styled-components";
 import { MainFeed } from "../components/home/feed";
 import { POSTS } from "../models/post";
 import { getSession } from "next-auth/react";
+import { PersonContext, PersonDto } from "../context/person-context";
+import { ReactNode, useContext, useState, useEffect } from "react";
+import { Session } from "next-auth";
+import { Person } from "../models/person";
 
 const MainLayout = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 `;
 
 const LeftContainer = styled.div`
   min-width: 280px;
 `;
 
-const Home: NextPage = (): JSX.Element => {
+interface HomeProps {
+  session: Session;
+  personData: Person;
+  children: ReactNode;
+}
+
+const Home: NextPage = (props: HomeProps): JSX.Element => {
+  const { personData } = props;
+  const { person, fetchUser } = useContext(PersonContext);
+
+  console.log(personData);
+
   return (
     <MainLayout>
-      <LeftContainer />
+      {/* <LeftContainer /> */}
       <MainFeed posts={POSTS} />
-      <LeftContainer />
+      {/* <LeftContainer /> */}
     </MainLayout>
   );
 };
@@ -35,8 +50,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
+  const result = await fetch(`http://localhost:3000/api/person?email=${session.user.email}`);
+
+  const data = await result.json();
+
   return {
-    props: { session },
+    props: { session, personData: data },
   };
 };
 

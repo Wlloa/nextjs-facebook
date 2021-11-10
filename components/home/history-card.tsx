@@ -3,6 +3,7 @@ import { IHistory } from "../../models/history";
 import Image from "next/image";
 import { StyledProps } from "../../common/props-interface";
 import styled from "styled-components";
+import { usePersonContext } from "../../context/person-context";
 
 interface ICard extends StyledProps {
   history?: IHistory;
@@ -17,7 +18,8 @@ const _UserLogo = (props: Logo): JSX.Element => {
   const { logo, className } = props;
   return (
     <div className={className}>
-      <Image src={logo} width={30} height={30} alt="" />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={logo} width={30} height={30} alt="" />
     </div>
   );
 };
@@ -28,7 +30,7 @@ const UserLogo = styled(_UserLogo)`
   top: 12px;
   left: 12px;
   z-index: 5;
-  > div {
+  > img {
     border-radius: 50%;
     border: 2px solid #1877f2;
   }
@@ -94,14 +96,16 @@ const CreateStory = styled.div`
 `;
 
 const _HistoryCard = ({ history, className }: ICard) => {
+  const {person} = usePersonContext();
+  
   return (
     <li className={className}>
       {history ? (
         <ImageDiv logo={history.postPicture}>
-          <UserLogo logo={history.userPicture} />
+          <UserLogo logo={person?.image} />
         </ImageDiv>
       ) : (
-        <ImageDiv logo="/static/miscellanea/me.jpg">
+        <ImageDiv logo={person?.image}>
           <div></div>
           <CreateStory>
             <div>

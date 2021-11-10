@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
 import Logo from "../../public/static/miscellanea/icon.svg";
@@ -31,11 +32,14 @@ const NavigationContainer = styled.div`
 `;
 
 function Navbar():JSX.Element {
+
+  const router = useRouter();
+
   return (
     <Nav>
       {/* logo and search bar */}
       <SearchContainer>
-        <Logo />
+        <Logo style={{cursor:'pointer'}} onClick={()=>router.push('/') } />
         <Search />
       </SearchContainer>
       {/* central nav */}

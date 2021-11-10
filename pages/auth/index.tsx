@@ -123,7 +123,7 @@ function _Auth(props: AuthProps): JSX.Element {
             <form onSubmit={onLogin}>
               <input
                 type="text"
-                placeholder="Email or Phone Number"
+                placeholder="Email account"
                 ref={emailRef}
               />
               <input type="password" placeholder="Password" ref={passRef} />

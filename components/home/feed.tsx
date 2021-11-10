@@ -10,7 +10,7 @@ const Feed = (props: PostsProp): JSX.Element => {
   const { posts, className } = props;
   return (
     <div className={className}>
-      <HistoryCards histories={HISTORIES.slice(0, 5)} />
+      <HistoryCards histories={HISTORIES.slice(0, 2)} />
       <AddPost />
       <PostList posts={posts} />
     </div>
@@ -18,7 +18,7 @@ const Feed = (props: PostsProp): JSX.Element => {
 };
 
 export const MainFeed = styled(Feed)`
-  padding: 56px 32px 0;
+  padding: 0 32px;
   min-height: calc(100vh - 56px);
   overflow-y: auto;
   display: flex;
@@ -30,5 +30,9 @@ export const MainFeed = styled(Feed)`
   z-index: 0;
   @media (min-width: 760px) {
     max-width: 744px;
+  }
+
+  @media(max-width: 768px) {
+    padding: 0 5px;
   }
 `;
