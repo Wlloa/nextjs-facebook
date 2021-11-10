@@ -35,7 +35,7 @@ export const PersonContextProvider = ({ children }: IProvider) => {
   const fetchUser = async (): Promise<void> => {
     if (session) {
       const personData = await fetch(
-        `${process.cwd()}/api/person?email=${session?.user.email}`
+        `${process.env.SERVER_HOST}/api/person?email=${session?.user.email}`
       );
       const person = await personData.json();
       setPerson(person);

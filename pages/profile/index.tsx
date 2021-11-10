@@ -21,7 +21,7 @@ export async function getServerSideProps(context) {
 
   let data;
   if (session) {
-    const response = await fetch(`${process.cwd()}/api/person`, {
+    const response = await fetch(`${process.env.SERVER_HOST}/api/person`, {
       body: JSON.stringify({ email: session.user.email }),
       method: "POST",
       headers: {
