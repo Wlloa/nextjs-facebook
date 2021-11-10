@@ -45,7 +45,7 @@ export default async function handler(
       const type = fields.type;
       const image = saveFile(files.image);
       //@ts-ignore
-      imagePath = await uploadImage(image, personId, String(type), files.image.originalFilename);
+      imagePath = await uploadImage(image, personId, String(type), `${files.image.newFilename}.png`);
       
       if (imagePath) {
         if (String(type) === ImageType.profile) {

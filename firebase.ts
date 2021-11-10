@@ -71,7 +71,7 @@ const getUsers = async (email: string) => {
 };
 
 const uploadImage = async (
-  image: Buffer,
+  image: Blob,
   id: string,
   bucket: string,
   name: string
