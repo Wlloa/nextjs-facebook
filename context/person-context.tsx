@@ -35,7 +35,7 @@ export const PersonContextProvider = ({ children }: IProvider) => {
   const fetchUser = async (): Promise<void> => {
     if (session) {
       const personData = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_HOST}/api/person?email=${session?.user.email}`
+        `https://nextjs-facebook-nine.vercel.app/api/person?email=${session?.user.email}`
       );
       const person = await personData.json();
       setPerson(person);
