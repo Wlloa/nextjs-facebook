@@ -50,7 +50,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  const result = await fetch(`${process.env.SERVER_HOST}/api/person?email=${session.user.email}`);
+  const result = await fetch(`${process.cwd()}/api/person?email=${session.user.email}`);
 
   const data = await result.json();
 
