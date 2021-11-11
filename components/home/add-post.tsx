@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { StyledProps } from "../../common/props-interface";
 import Image from "next/image";
 import { Icon } from "../navbar/menu";
 import { usePersonContext } from "../../context/person-context";
+import Modal from "../modal";
+import { CreatePost } from "../modals/create-post";
 
 const AddPostFooter = styled.div`
   width: 100%;
@@ -40,23 +42,49 @@ const AddPostFooter = styled.div`
   }
 `;
 
+const InputStyleComp = styled.div`
+  width: 100% !important;
+  height: 40px;
+  padding: 7px 16px 9px 36px;
+  border: 0;
+  outline: none;
+  border-top-right-radius: 50px;
+  border-top-left-radius: 50px;
+  border-bottom-right-radius: 50px;
+  border-bottom-left-radius: 50px;
+  background-color: #f0f2f5;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  > span {
+    color: #505050;
+    font-size: 14px;
+  }
+`;
+
 const _AddPost = (props: StyledProps): JSX.Element => {
   const { className } = props;
-  const {person} = usePersonContext();
+  const { person } = usePersonContext();
+  const [open, setOpen] = useState(false);
+
+  const createPost = () => {
+    setOpen(false);
+  };
 
   return (
     <div className={className}>
+      <Modal title="Create post" show={open} onClose={createPost}>
+        <CreatePost/>
+      </Modal>
       <form>
         <div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={person?.image}
-            width={40}
-            height={40}
-            alt=""
-          />
+          <img src={person?.image} width={40} height={40} alt="" />
         </div>
-        <input type="text" placeholder="What's on your mind, Wilber" />
+        <InputStyleComp onClick={() => setOpen(true)}>
+          <span>Whats on your mind, Wilber</span>
+        </InputStyleComp>
       </form>
       <AddPostFooter>
         <ul>
