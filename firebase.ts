@@ -20,6 +20,7 @@ import {
 import { Person } from "./models/person";
 import formidable from "formidable";
 import fs from "fs";
+import { IPost } from "./models/post";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBHPVvayn6o6bzyG1eNC9r6P4DLhJsb57U",
@@ -41,6 +42,19 @@ const createUser = async (user: Person): Promise<string> => {
     const newUserRef = push(userRef);
     await set(newUserRef, user);
     return newUserRef.key;
+  } catch (error) {
+    throw new Error(
+      error.message || "Something went wrong with database write"
+    );
+  }
+};
+
+const createPost = async (post: IPost): Promise<string> => {
+  try {
+    const postRef = ref(db, "posts");
+    const newPost = push(postRef);
+    await set(newPost, post);
+    return newPost.key;
   } catch (error) {
     throw new Error(
       error.message || "Something went wrong with database write"
@@ -90,4 +104,13 @@ const downloadImage = async (imageUrl: string): Promise<string> => {
   return await getDownloadURL(bucketUrl);
 };
 
-export { app, db, storage, createUser, getUsers, uploadImage, updateUser };
+export {
+  app,
+  db,
+  storage,
+  createUser,
+  getUsers,
+  uploadImage,
+  updateUser,
+  createPost,
+};

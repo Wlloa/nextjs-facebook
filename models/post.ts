@@ -1,8 +1,7 @@
 export interface IPost {
-  id: string;
-  userName: string;
-  userPicture: string;
-  date?: string;
+  id?: string;
+  user: string;
+  timestamp?: string;
   description?: string;
   postPicture?: string;
 }

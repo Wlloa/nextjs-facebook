@@ -75,7 +75,7 @@ const _AddPost = (props: StyledProps): JSX.Element => {
   return (
     <div className={className}>
       <Modal title="Create post" show={open} onClose={createPost}>
-        <CreatePost/>
+        <CreatePost person={person} />
       </Modal>
       <form>
         <div>

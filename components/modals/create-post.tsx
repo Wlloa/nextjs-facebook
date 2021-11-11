@@ -1,9 +1,12 @@
 import Compressor from "compressorjs";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { Icon } from "../navbar/menu";
 import Image from "next/image";
 import fs from "fs";
+import { Person } from "../../models/person";
+import { uploadImage } from "../../firebase";
+import { IPost } from "../../models/post";
 
 const Container = styled.div`
   display: flex;
@@ -27,8 +30,8 @@ const ImageSection = styled.div`
   overflow: hidden;
   position: relative;
   img {
-      object-fit: contain;
-      width: 100%;
+    object-fit: contain;
+    width: 100%;
   }
 `;
 
@@ -56,10 +59,20 @@ const SubmitPost = styled.button`
   border: none;
 `;
 
-export const CreatePost = (): JSX.Element => {
+interface CreatePostProps {
+  person: Person;
+}
+
+export const CreatePost = ({ person }: CreatePostProps): JSX.Element => {
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [loading, setLoading] = useState(false);
   const imagePicker = useRef(null);
+  const descriptionRef = useRef(null);
+
+  // useEffect(()=> {
+  //   console.log(person);
+  // }, []);
 
   const ImageSelectedHandler = (e) => {
     e.preventDefault();
@@ -79,11 +92,53 @@ export const CreatePost = (): JSX.Element => {
     }
   };
 
+  const submitPost = async () => {
+    setLoading(true);
+    /*
+    Steps for create post
+      1. check if the post contain an image
+      2. save into firebase storage the post image under user id
+      3. with the image url from firebase storage create the post 
+    */
+    let imageUrl;
+    if (imagePreview) {
+      imageUrl = await uploadImage(imagePreview, person.id, "post", image.name);
+    }
+    const description = descriptionRef.current.value;
+    const post: IPost = {
+      user: person.id,
+      description: description,
+      postPicture: imageUrl,
+      timestamp: new Date().toLocaleTimeString(),
+    };
+    const response = await fetch(`${process.env.SERVER_HOST}/api/posts`, {
+      method: "POST",
+      body: JSON.stringify(post),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) {
+      setLoading(false);
+      console.log('something went wrong');
+    }
+    const data = await response.json();
+    console.log(data);
+  };
+
   return (
     <Container>
-      <AccountBlock></AccountBlock>
-      <DescriptionBlock placeholder="What is on your mind, Wilber" cols={5} />
+      <AccountBlock>
+        {/* <img src={person?.image} alt="" /> */}
+        <span>{person?.firstName}</span>
+      </AccountBlock>
+      <DescriptionBlock
+        placeholder="What is on your mind, Wilber"
+        cols={5}
+        ref={descriptionRef}
+      />
       <ImageSection>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={imagePreview} alt="" />
       </ImageSection>
       <AddImageSection onClick={() => imagePicker.current.click()}>
@@ -108,7 +163,7 @@ export const CreatePost = (): JSX.Element => {
           />
         </div>
       </AddImageSection>
-      <SubmitPost>Post</SubmitPost>
+      <SubmitPost onClick={submitPost}>Post</SubmitPost>
     </Container>
   );
 };
