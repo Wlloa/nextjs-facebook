@@ -10,9 +10,9 @@ module.exports = {
     return config;
   },
   images: {
-    domains: [
-      "https://firebasestorage.googleapis.com/v0/b/next-facebook-7830a.appspot.com/o/profiles",
-    ],
+    domains: ['https://firebasestorage.googleapis.com/v0/b/next-facebook-7830a.appspot.com/o/profiles']
   },
-  
+  env: {
+    SERVER_HOST: process.env.SERVER_HOST,
+  }
 };
