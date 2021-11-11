@@ -67,6 +67,8 @@ const WallImageContainer = styled.div`
     background-size: cover;
     border-style: solid;
     border-width: 0;
+    object-fit: contain;
+    width: 100%;
   }
 `;
 
@@ -105,6 +107,8 @@ const ProfileImage = styled.div`
     border-style: solid;
     border-width: 4px;
     border-color: var(--color-white);
+    object-fit: cover;
+    width: 100%;
   }
 `;
 
