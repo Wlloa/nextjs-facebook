@@ -20,6 +20,8 @@ import {
 import { Person } from "./models/person";
 import formidable from "formidable";
 import fs from "fs";
+import { IPost } from "./models/post";
+import { orderBy } from "@firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBHPVvayn6o6bzyG1eNC9r6P4DLhJsb57U",
@@ -41,6 +43,19 @@ const createUser = async (user: Person): Promise<string> => {
     const newUserRef = push(userRef);
     await set(newUserRef, user);
     return newUserRef.key;
+  } catch (error) {
+    throw new Error(
+      error.message || "Something went wrong with database write"
+    );
+  }
+};
+
+const createPost = async (post: IPost): Promise<string> => {
+  try {
+    const postRef = ref(db, "posts");
+    const newPost = push(postRef);
+    await set(newPost, post);
+    return newPost.key;
   } catch (error) {
     throw new Error(
       error.message || "Something went wrong with database write"
@@ -70,6 +85,18 @@ const getUsers = async (email: string) => {
   }
 };
 
+const getPosts = async (userId: string) => {
+  console.log(userId);
+  try {
+    const posts = await(get(
+      query(ref(db, "posts"), orderByChild("user"), equalTo(userId))
+    ))
+    return posts.val();
+  } catch (error) {
+    throw new Error(error.message || "Something went wrong getting user");
+  }
+}
+
 const uploadImage = async (
   image: Blob,
   id: string,
@@ -78,8 +105,21 @@ const uploadImage = async (
 ): Promise<string> => {
   const imageRef = storageRef(storage, `${id}/${bucket}/${name}`);
 
-  console.log(image);
   const snap = await uploadBytes(imageRef, image);
+  const downloadURL = await getDownloadURL(imageRef);
+  console.log(snap, downloadURL);
+  return downloadURL;
+};
+
+const uploadPostImage = async (
+  image: any,
+  id: string,
+  bucket: string,
+  name: string
+): Promise<string> => {
+  const imageRef = storageRef(storage, `${id}/${bucket}/${name}`);
+
+  const snap = await uploadString(imageRef, image, "data_url");
   const downloadURL = await getDownloadURL(imageRef);
   console.log(snap, downloadURL);
   return downloadURL;
@@ -90,4 +130,15 @@ const downloadImage = async (imageUrl: string): Promise<string> => {
   return await getDownloadURL(bucketUrl);
 };
 
-export { app, db, storage, createUser, getUsers, uploadImage, updateUser };
+export {
+  app,
+  db,
+  storage,
+  createUser,
+  getUsers,
+  uploadImage,
+  updateUser,
+  createPost,
+  getPosts,
+  uploadPostImage
+};
