@@ -29,6 +29,7 @@ const StyledModalOverlay = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   @media(max-width: 768px) {
     width: unset;
+    z-index: 15;
   }
 `;
 
@@ -36,7 +37,7 @@ const StyledModalWrapper = styled.div`
   width: 432px;
   height: 500px;
   @media(max-width: 768px) {
-    width: 100%;
+    width: 100vw;
     height: 100%;
   }
 `;

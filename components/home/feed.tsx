@@ -6,18 +6,18 @@ import { AddPost } from "./add-post";
 import { HistoryCards } from "./history-cards";
 import { PostList, PostsProp } from "./postList";
 
-const Feed = (props: PostsProp): JSX.Element => {
-  const { posts, className } = props;
-  return (
-    <div className={className}>
-      <HistoryCards histories={HISTORIES.slice(0, 2)} />
-      <AddPost />
-      <PostList posts={posts} />
-    </div>
-  );
-};
+// const Feed = (props: PostsProp): JSX.Element => {
+//   const { posts, className } = props;
+//   return (
+//     <div className={className}>
+//       <HistoryCards histories={HISTORIES.slice(0, 2)} />
+//       <AddPost />
+//       <PostList posts={posts} />
+//     </div>
+//   );
+// };
 
-export const MainFeed = styled(Feed)`
+export const MainFeed = styled.div`
   padding: 0 32px;
   min-height: calc(100vh - 56px);
   overflow-y: auto;

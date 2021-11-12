@@ -15,18 +15,21 @@ const PostHeader = styled.div`
   width: 100%;
 `;
 
-const ImageContainer = styled.a`
+const ImageContainer = styled.div`
   margin-right: 8px;
-  span {
+  img {
     width: 38px;
     height: 38px;
     border-radius: 50%;
+    object-fit: contains;
+    border: 1px solid var(--color-gray);
   }
 `;
 
 const Info = styled.div`
   display: flex;
   flex-flow: column nowrap;
+  justify-content: center;
   span:first-of-type {
     font-weight: 600;
     font-size: 15px;
@@ -50,7 +53,7 @@ export const Footer = styled.div`
     justify-content: space-between;
     align-items: center;
     height: 44px;
-    border-top: 1px solid #E4E6EB;
+    border-top: 1px solid #e4e6eb;
     margin-top: 48px;
     margin-left: auto;
     margin-right: auto;
@@ -77,9 +80,17 @@ export const Footer = styled.div`
     }
   }
 
-  li:hover{
+  li:hover {
     background-color: rgba(0, 0, 0, 0.05);
     border-radius: 4px;
+  }
+`;
+
+const PostImage = styled.div`
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 `;
 
@@ -88,33 +99,23 @@ const _Post = (props: Prop): JSX.Element => {
   return (
     <div className={className}>
       <PostHeader>
-        <ImageContainer href="">
-          <Image
-            src={post.userPicture}
-            alt={post.userName}
-            width="38px"
-            height="38px"
-          />
+        <ImageContainer>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={post?.userImage} alt="" />
         </ImageContainer>
         <Info>
-          <span>{post.userName}</span>
-          <span>{post.date}</span>
+          <span>{post?.userName}</span>
+          <span>{post?.timestamp}</span>
         </Info>
       </PostHeader>
       <Description>
         <p>{post.description}</p>
       </Description>
-      <div>
-        {post.postPicture && (
-          <Image
-            src={post.postPicture}
-            width="100%"
-            height="100%"
-            layout="responsive"
-            alt=""
-          />
-        )}
-      </div>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <PostImage>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={post?.postPicture} alt="" />
+      </PostImage>
       <Footer>
         <ul>
           <li>
