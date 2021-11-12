@@ -5,7 +5,7 @@ import { Icon } from "../navbar/menu";
 import Image from "next/image";
 import fs from "fs";
 import { Person } from "../../models/person";
-import { uploadImage } from "../../firebase";
+import { uploadImage, uploadPostImage } from "../../firebase";
 import { IPost } from "../../models/post";
 
 const Container = styled.div`
@@ -57,13 +57,21 @@ const SubmitPost = styled.button`
   outline: none;
   text-decoration: none;
   border: none;
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 `;
 
 interface CreatePostProps {
   person: Person;
+  onAddedPost: (post: IPost) => void;
 }
 
-export const CreatePost = ({ person }: CreatePostProps): JSX.Element => {
+export const CreatePost = ({
+  person,
+  onAddedPost,
+}: CreatePostProps): JSX.Element => {
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -93,6 +101,7 @@ export const CreatePost = ({ person }: CreatePostProps): JSX.Element => {
   };
 
   const submitPost = async () => {
+    if (loading) return;
     setLoading(true);
     /*
     Steps for create post
@@ -102,7 +111,12 @@ export const CreatePost = ({ person }: CreatePostProps): JSX.Element => {
     */
     let imageUrl;
     if (imagePreview) {
-      imageUrl = await uploadImage(imagePreview, person.id, "post", image.name);
+      imageUrl = await uploadPostImage(
+        imagePreview,
+        person.id,
+        "post",
+        image.name
+      );
     }
     const description = descriptionRef.current.value;
     const post: IPost = {
@@ -120,10 +134,15 @@ export const CreatePost = ({ person }: CreatePostProps): JSX.Element => {
     });
     if (!response.ok) {
       setLoading(false);
-      console.log('something went wrong');
+      console.log("something went wrong");
     }
     const data = await response.json();
-    console.log(data);
+
+    if (data) {
+      setLoading(false);
+      onAddedPost(data.post);
+      // console.log(data);
+    }
   };
 
   return (
@@ -163,7 +182,12 @@ export const CreatePost = ({ person }: CreatePostProps): JSX.Element => {
           />
         </div>
       </AddImageSection>
-      <SubmitPost onClick={submitPost}>Post</SubmitPost>
+      <SubmitPost
+        onClick={submitPost}
+        disabled={!image || loading}
+      >
+        {loading ? "Uploading..." : "Post"}
+      </SubmitPost>
     </Container>
   );
 };

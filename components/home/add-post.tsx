@@ -6,6 +6,7 @@ import { Icon } from "../navbar/menu";
 import { usePersonContext } from "../../context/person-context";
 import Modal from "../modal";
 import { CreatePost } from "../modals/create-post";
+import { IPost } from "../../models/post";
 
 const AddPostFooter = styled.div`
   width: 100%;
@@ -63,8 +64,12 @@ const InputStyleComp = styled.div`
   }
 `;
 
-const _AddPost = (props: StyledProps): JSX.Element => {
-  const { className } = props;
+interface AddPostProps extends StyledProps{
+  onAddedPost: (post: IPost) => void;
+}
+
+const _AddPost = (props: AddPostProps): JSX.Element => {
+  const { className, onAddedPost } = props;
   const { person } = usePersonContext();
   const [open, setOpen] = useState(false);
 
@@ -72,10 +77,15 @@ const _AddPost = (props: StyledProps): JSX.Element => {
     setOpen(false);
   };
 
+  const onCloseModal = (post: IPost) => {
+    setOpen(false);
+    onAddedPost(post);
+  }
+
   return (
     <div className={className}>
       <Modal title="Create post" show={open} onClose={createPost}>
-        <CreatePost person={person} />
+        <CreatePost person={person} onAddedPost={onCloseModal} />
       </Modal>
       <form>
         <div>

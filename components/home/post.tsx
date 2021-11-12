@@ -50,7 +50,7 @@ export const Footer = styled.div`
     justify-content: space-between;
     align-items: center;
     height: 44px;
-    border-top: 1px solid #E4E6EB;
+    border-top: 1px solid #e4e6eb;
     margin-top: 48px;
     margin-left: auto;
     margin-right: auto;
@@ -77,9 +77,17 @@ export const Footer = styled.div`
     }
   }
 
-  li:hover{
+  li:hover {
     background-color: rgba(0, 0, 0, 0.05);
     border-radius: 4px;
+  }
+`;
+
+const PostImage = styled.div`
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 `;
 
@@ -89,32 +97,25 @@ const _Post = (props: Prop): JSX.Element => {
     <div className={className}>
       <PostHeader>
         <ImageContainer href="">
-          <Image
-            src={post.userPicture}
+          {/* <Image
+            src={post.postPicture}
             alt={post.userName}
             width="38px"
             height="38px"
-          />
+          /> */}
         </ImageContainer>
         <Info>
-          <span>{post.userName}</span>
-          <span>{post.date}</span>
+          {/* <span>{post.userName}</span> */}
+          <span>{post.timestamp}</span>
         </Info>
       </PostHeader>
       <Description>
         <p>{post.description}</p>
       </Description>
-      <div>
-        {post.postPicture && (
-          <Image
-            src={post.postPicture}
-            width="100%"
-            height="100%"
-            layout="responsive"
-            alt=""
-          />
-        )}
-      </div>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <PostImage>
+        <img src={post?.postPicture} alt="" />
+      </PostImage>
       <Footer>
         <ul>
           <li>
