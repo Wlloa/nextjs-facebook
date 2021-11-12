@@ -15,18 +15,21 @@ const PostHeader = styled.div`
   width: 100%;
 `;
 
-const ImageContainer = styled.a`
+const ImageContainer = styled.div`
   margin-right: 8px;
-  span {
+  img {
     width: 38px;
     height: 38px;
     border-radius: 50%;
+    object-fit: contains;
+    border: 1px solid var(--color-gray);
   }
 `;
 
 const Info = styled.div`
   display: flex;
   flex-flow: column nowrap;
+  justify-content: center;
   span:first-of-type {
     font-weight: 600;
     font-size: 15px;
@@ -96,17 +99,13 @@ const _Post = (props: Prop): JSX.Element => {
   return (
     <div className={className}>
       <PostHeader>
-        <ImageContainer href="">
-          {/* <Image
-            src={post.postPicture}
-            alt={post.userName}
-            width="38px"
-            height="38px"
-          /> */}
+        <ImageContainer>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={post?.userImage} alt="" />
         </ImageContainer>
         <Info>
-          {/* <span>{post.userName}</span> */}
-          <span>{post.timestamp}</span>
+          <span>{post?.userName}</span>
+          <span>{post?.timestamp}</span>
         </Info>
       </PostHeader>
       <Description>
@@ -114,6 +113,7 @@ const _Post = (props: Prop): JSX.Element => {
       </Description>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <PostImage>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={post?.postPicture} alt="" />
       </PostImage>
       <Footer>

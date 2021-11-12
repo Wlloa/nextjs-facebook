@@ -5,7 +5,7 @@ import { AddPost } from "../components/home/add-post";
 import { HistoryCards } from "../components/home/history-cards";
 import { HISTORIES } from "../models/history";
 import { PostList } from "../components/home/postList";
-import { IPost, POSTS } from "../models/post";
+import { IPost } from "../models/post";
 import { getSession } from "next-auth/react";
 import { PersonContext, PersonDto } from "../context/person-context";
 import { ReactNode, useContext, useState, useEffect } from "react";

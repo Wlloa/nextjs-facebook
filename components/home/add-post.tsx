@@ -93,7 +93,7 @@ const _AddPost = (props: AddPostProps): JSX.Element => {
           <img src={person?.image} width={40} height={40} alt="" />
         </div>
         <InputStyleComp onClick={() => setOpen(true)}>
-          <span>Whats on your mind, Wilber</span>
+          <span>Whats on your mind, {person?.firstName}</span>
         </InputStyleComp>
       </form>
       <AddPostFooter>

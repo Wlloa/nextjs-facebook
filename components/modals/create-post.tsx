@@ -13,10 +13,30 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const AccountBlock = styled.div``;
+const AccountBlock = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+    margin-right: 12px;
+  }
+  span {
+    color: #505050;
+    font-size: 15px;
+    font-weight: 700;
+  }
+`;
 
 const DescriptionBlock = styled.textarea`
   border: none;
+  outline: none;
+  resize: none;
+  color: #505050;
+  font-size: 16px;
 `;
 
 const ImageSection = styled.div`
@@ -26,7 +46,7 @@ const ImageSection = styled.div`
     inset 0 0 0 1 px rgba(255, 255, 255, 0.5);
   width: 100%;
   margin: 16px 0;
-  height: 180px;
+  height: 170px;
   overflow: hidden;
   position: relative;
   img {
@@ -110,6 +130,10 @@ export const CreatePost = ({
       3. with the image url from firebase storage create the post 
     */
     let imageUrl;
+    const description = descriptionRef.current
+      ? descriptionRef.current.value
+      : undefined;
+      
     if (imagePreview) {
       imageUrl = await uploadPostImage(
         imagePreview,
@@ -118,9 +142,11 @@ export const CreatePost = ({
         image.name
       );
     }
-    const description = descriptionRef.current.value;
+    
     const post: IPost = {
       user: person.id,
+      userImage: person.image,
+      userName: person.firstName,
       description: description,
       postPicture: imageUrl,
       timestamp: new Date().toLocaleTimeString(),
@@ -148,11 +174,12 @@ export const CreatePost = ({
   return (
     <Container>
       <AccountBlock>
-        {/* <img src={person?.image} alt="" /> */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={person?.image} alt="" />
         <span>{person?.firstName}</span>
       </AccountBlock>
       <DescriptionBlock
-        placeholder="What is on your mind, Wilber"
+        placeholder={`What is in your mind, ${person.firstName}`}
         cols={5}
         ref={descriptionRef}
       />
@@ -182,10 +209,7 @@ export const CreatePost = ({
           />
         </div>
       </AddImageSection>
-      <SubmitPost
-        onClick={submitPost}
-        disabled={!image || loading}
-      >
+      <SubmitPost onClick={submitPost} disabled={!image || loading}>
         {loading ? "Uploading..." : "Post"}
       </SubmitPost>
     </Container>
