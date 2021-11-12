@@ -77,7 +77,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (!session) {
     return {
       redirect: {
-        destination: "/auth",
+        destination: `${process.env.SERVER_HOST}/auth`,
         permanent: false,
       },
     };
