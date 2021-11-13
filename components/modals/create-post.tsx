@@ -53,6 +53,23 @@ const ImageSection = styled.div`
     object-fit: contain;
     width: 100%;
   }
+
+  span {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-gray);
+    border-radius: 50%;
+    z-index: 5;
+    cursor: pointer;
+  }
 `;
 
 const AddImageSection = styled.div`
@@ -98,10 +115,6 @@ export const CreatePost = ({
   const imagePicker = useRef(null);
   const descriptionRef = useRef(null);
 
-  // useEffect(()=> {
-  //   console.log(person);
-  // }, []);
-
   const ImageSelectedHandler = (e) => {
     e.preventDefault();
     if (e.target.files && e.target.files[0]) {
@@ -133,7 +146,7 @@ export const CreatePost = ({
     const description = descriptionRef.current
       ? descriptionRef.current.value
       : undefined;
-      
+
     if (imagePreview) {
       imageUrl = await uploadPostImage(
         imagePreview,
@@ -142,7 +155,7 @@ export const CreatePost = ({
         image.name
       );
     }
-    
+
     const post: IPost = {
       user: person.id,
       userImage: person.image,
@@ -186,6 +199,7 @@ export const CreatePost = ({
       <ImageSection>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={imagePreview} alt="" />
+        {imagePreview && <span onClick={() => setImagePreview(null)}>x</span>}
       </ImageSection>
       <AddImageSection onClick={() => imagePicker.current.click()}>
         <div>
