@@ -102,7 +102,7 @@ const _AddPost = (props: AddPostProps): JSX.Element => {
       <AddPostFooter>
         <ul>
           <li>
-            <a href="javascript:" onClick={() => setOpen(true)}>
+            <a  onClick={() => setOpen(true)}>
               <Icon
                 url="https://static.xx.fbcdn.net/rsrc.php/v3/yC/r/jrzbj1_5Jys.png"
                 posX={0}
@@ -114,7 +114,7 @@ const _AddPost = (props: AddPostProps): JSX.Element => {
             </a>
           </li>
           <li>
-            <a href="javascript:" onClick={() => setOpen(true)}>
+            <a  onClick={() => setOpen(true)}>
               <Icon
                 url="https://static.xx.fbcdn.net/rsrc.php/v3/yC/r/jrzbj1_5Jys.png"
                 posX={0}
@@ -126,7 +126,7 @@ const _AddPost = (props: AddPostProps): JSX.Element => {
             </a>
           </li>
           <li>
-            <a href="javascript:" onClick={() => setOpen(true)}>
+            <a onClick={() => setOpen(true)}>
               <Icon
                 url="https://static.xx.fbcdn.net/rsrc.php/v3/yC/r/jrzbj1_5Jys.png"
                 posX={0}
