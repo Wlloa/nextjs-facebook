@@ -7,6 +7,7 @@ import { usePersonContext } from "../../context/person-context";
 import Modal from "../modal";
 import { CreatePost } from "../modals/create-post";
 import { IPost } from "../../models/post";
+import { useRouter } from "next/router";
 
 const AddPostFooter = styled.div`
   width: 100%;
@@ -22,6 +23,7 @@ const AddPostFooter = styled.div`
     padding: 6px 2px;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 
     a {
       display: flex;
@@ -72,6 +74,7 @@ const _AddPost = (props: AddPostProps): JSX.Element => {
   const { className, onAddedPost } = props;
   const { person } = usePersonContext();
   const [open, setOpen] = useState(false);
+  const router = useRouter();
 
   const createPost = () => {
     setOpen(false);
@@ -88,7 +91,7 @@ const _AddPost = (props: AddPostProps): JSX.Element => {
         <CreatePost person={person} onAddedPost={onCloseModal} />
       </Modal>
       <form>
-        <div>
+        <div onClick={()=> router.push(`/${person?.userName}`)}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={person?.image} width={40} height={40} alt="" />
         </div>
@@ -99,7 +102,7 @@ const _AddPost = (props: AddPostProps): JSX.Element => {
       <AddPostFooter>
         <ul>
           <li>
-            <a href="">
+            <a  onClick={() => setOpen(true)}>
               <Icon
                 url="https://static.xx.fbcdn.net/rsrc.php/v3/yC/r/jrzbj1_5Jys.png"
                 posX={0}
@@ -111,7 +114,7 @@ const _AddPost = (props: AddPostProps): JSX.Element => {
             </a>
           </li>
           <li>
-            <a href="">
+            <a  onClick={() => setOpen(true)}>
               <Icon
                 url="https://static.xx.fbcdn.net/rsrc.php/v3/yC/r/jrzbj1_5Jys.png"
                 posX={0}
@@ -123,7 +126,7 @@ const _AddPost = (props: AddPostProps): JSX.Element => {
             </a>
           </li>
           <li>
-            <a href="">
+            <a onClick={() => setOpen(true)}>
               <Icon
                 url="https://static.xx.fbcdn.net/rsrc.php/v3/yC/r/jrzbj1_5Jys.png"
                 posX={0}
@@ -157,6 +160,7 @@ export const AddPost = styled(_AddPost)`
       height: 40px;
       width: 40px;
       margin-right: 8px;
+      cursor: pointer;
     }
     div > img {
       border-radius: 50%;

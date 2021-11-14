@@ -60,7 +60,7 @@ const Home: NextPage = (props: HomeProps): JSX.Element => {
     <MainLayout>
       {/* <LeftContainer /> */}
       <MainFeed>
-        <HistoryCards histories={HISTORIES.slice(0, 2)} />  
+        <HistoryCards histories={HISTORIES.slice(0, 5)} />  
         <AddPost onAddedPost={addedPostHandler} />
         <PostList posts={posts} />
         {/* <MainFeed posts={posts} /> */}

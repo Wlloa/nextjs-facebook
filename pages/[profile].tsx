@@ -67,7 +67,7 @@ const WallImageContainer = styled.div`
     background-size: cover;
     border-style: solid;
     border-width: 0;
-    object-fit: contain;
+    object-fit: cover;
     width: 100%;
   }
 `;
@@ -112,6 +112,15 @@ const ProfileImage = styled.div`
   }
 `;
 
+const Body = styled.div`
+  margin-top: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: 60px;
+  background-color: var(--color-white);
+`;
+
+
 const Profile = ({ profile }: ProfileProps): JSX.Element => {
   console.log(profile);
 
@@ -152,6 +161,7 @@ const Profile = ({ profile }: ProfileProps): JSX.Element => {
           )}
         </InfoContainer>
       </ImageContainer>
+      <Body></Body>
     </ProfileContainer>
   );
 };

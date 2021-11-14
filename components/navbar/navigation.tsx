@@ -4,6 +4,7 @@ import Watch from "../../public/static/miscellanea/watch.svg";
 import Groups from "../../public/static/miscellanea/groups.svg";
 import Gaming from "../../public/static/miscellanea/gaming.svg";
 import styled from "styled-components";
+import { useRouter } from "next/router";
 
 const UList = styled.ul`
   display: flex;
@@ -26,10 +27,16 @@ const ItemList = styled.li`
 `;
 
 export const Navigation = ():JSX.Element => {
+  const router = useRouter();
+  
+  const goToHome = () => {
+    router.push('/');
+  }
+
   return (
     <UList>
       <ItemList>
-        <a href="">
+        <a onClick={goToHome}>
           <Home />
         </a>
       </ItemList>
