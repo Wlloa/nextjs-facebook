@@ -36,7 +36,7 @@ export const Navigation = ():JSX.Element => {
   return (
     <UList>
       <ItemList>
-        <a onClick={goToHome}>
+        <a href="" onClick={goToHome}>
           <Home />
         </a>
       </ItemList>
