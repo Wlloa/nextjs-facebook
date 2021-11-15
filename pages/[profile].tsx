@@ -1,13 +1,20 @@
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { StyledProps } from "../common/props-interface";
-import { UploadPicture, UploadWallPicture } from "../components/profile/upload-picture";
+import { AddPost } from "../components/home/add-post";
+import { PostList } from "../components/home/postList";
+import {
+  UploadPicture,
+  UploadWallPicture,
+} from "../components/profile/upload-picture";
 import { Person } from "../models/person";
+import { IPost } from "../models/post";
 
 interface ProfileProps {
   profile: Person;
+  posts: IPost[];
 }
 
 export const ImageType = {
@@ -52,7 +59,7 @@ const WallImageContainer = styled.div`
   border-bottom-left-radius: 8px;
   background-color: var(--color-dark-blue);
 
-  @media(max-width: 1200px) {
+  @media (max-width: 1200px) {
     max-width: unset;
     min-width: unset;
     border-radius: unset;
@@ -67,7 +74,7 @@ const WallImageContainer = styled.div`
     background-size: cover;
     border-style: solid;
     border-width: 0;
-    object-fit: contain;
+    object-fit: cover;
     width: 100%;
   }
 `;
@@ -112,15 +119,74 @@ const ProfileImage = styled.div`
   }
 `;
 
-const Profile = ({ profile }: ProfileProps): JSX.Element => {
-  console.log(profile);
+const ProfileBody = styled.div`
+  max-width: 800px;
+  margin-right: auto;
+  margin-left: auto;
+  display: flex;
+  justify-content: space-around;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: 0 6px;
+  }
+`;
+
+const PostSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 0.7;
+  max-width: 500px;
+`;
+
+const InfoSection = styled.div`
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  flex: 0.3;
+  text-align: left;
+  background-color: var(--color-white);
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  padding: 12px;
+  height: 300px;
+  
+  h2 {
+    margin-bottom: 16px;
+  }
+
+  @media(max-width: 768px) {
+    width: 100%;
+  }
+`;
+
+const InfoRow = styled.div`
+  display: flex;
+  margin: 8px 0;
+  align-items: center;
+  h3 {
+    font-size: 16px;
+    margin-right: 8px;
+  }
+  span {
+    font-size: 14px;
+  }
+`;
+
+const Profile = ({ profile, posts }: ProfileProps): JSX.Element => {
+  const [localPosts, setLocalPost] = useState(posts);
+
+  const addedPostHandler = (post: IPost) => {
+    console.log(post);
+    setLocalPost((current) => [post, ...current]);
+  };
 
   const uploadPicture = async (picture: any, type: string) => {
-    console.log(picture);
     const body = new FormData();
     body.append("image", picture);
     body.append("type", type);
-    console.log(body.get('type'));
+    console.log(body.get("type"));
     fetch(`${process.env.SERVER_HOST}/api/person`, {
       method: "PUT",
       body,
@@ -133,12 +199,12 @@ const Profile = ({ profile }: ProfileProps): JSX.Element => {
     <ProfileContainer>
       <ImageContainer>
         <ProfileImage>
-           {/* eslint-disable-next-line @next/next/no-img-element */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={profile?.image} alt="" />
         </ProfileImage>
         <UploadPicture onSubmit={uploadPicture} />
         <WallImageContainer>
-           {/* eslint-disable-next-line @next/next/no-img-element */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={profile?.wallImage} alt="" />
           <ImageAction>
             <UploadWallPicture onSubmit={uploadPicture}></UploadWallPicture>
@@ -152,6 +218,31 @@ const Profile = ({ profile }: ProfileProps): JSX.Element => {
           )}
         </InfoContainer>
       </ImageContainer>
+      <ProfileBody>
+        <InfoSection>
+          <h2>Intro</h2>
+          <InfoRow>
+            <h3>Full Name</h3>
+            <span>{`${profile?.firstName} ${profile?.lastName}`}</span>
+          </InfoRow>
+          <InfoRow>
+            <h3>Email</h3>
+            <span>{profile?.email}</span>
+          </InfoRow>
+          <InfoRow>
+            <h3>Birthday</h3>
+            <span>{profile?.birthday}</span>
+          </InfoRow>
+          <InfoRow>
+            <h3>Gender</h3>
+            <span>{profile?.gender}</span>
+          </InfoRow>
+        </InfoSection>
+        <PostSection>
+          <AddPost onAddedPost={addedPostHandler} />
+          <PostList posts={localPosts} />
+        </PostSection>
+      </ProfileBody>
     </ProfileContainer>
   );
 };
@@ -171,10 +262,25 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const response = await fetch(
     `${process.env.SERVER_HOST}/api/person?email=${session.user.email}`
   );
+
   const data = await response.json();
+  const posts = [];
+
+  if (data && data.id) {
+    const postResponse = await fetch(
+      `${process.env.SERVER_HOST}/api/posts?id=${data.id}`
+    );
+
+    const postData = await postResponse.json();
+
+    for (let key in postData.posts) {
+      const postTemp = { ...postData.posts[key], id: key };
+      posts.unshift(postTemp);
+    }
+  }
 
   return {
-    props: { profile: data },
+    props: { profile: data, posts: posts },
   };
 };
 

@@ -27,6 +27,8 @@ const StyledModalOverlay = styled.div`
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10;
+  
   @media(max-width: 768px) {
     width: unset;
     z-index: 15;
